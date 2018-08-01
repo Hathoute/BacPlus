@@ -1,0 +1,62 @@
+<resources>
+    <string name="app_name">Bac Plus</string>
+
+    <string name="years_title">السنة الدراسية</string>
+    <string name="years_notice">المرجو اختيار السنة الدراسية التي تتواجدون بها حاليا</string>
+    <string name="years_first">اولا باكالوريا</string>
+    <string name="years_second">ثانية باكالوريا</string>
+
+    <string name="options_title">الشعبة</string>
+    <string name="options_notice">المرجو اختيار الشعبة من خلال القائمة اسفله</string>
+    <string-array name="options_firstyear_array">
+        <item>علوم رياضية</item>
+        <item>علوم تجريبية</item>
+        <item>علوم إقتصادية</item>
+    </string-array>
+    <string-array name="options_firstyear_helper">
+        <item>scm</item>
+        <item>scex</item>
+        <item>sceco</item>
+    </string-array>
+
+    <string-array name="options_secondyear_array">
+        <item>علوم رياضية أ</item>
+        <item>علوم رياضية ب</item>
+        <item>علوم فيزيائية</item>
+        <item>علوم الحياة و الارض</item>
+        <item>علوم إقتصادية</item>
+    </string-array>
+    <string-array name="options_secondyear_helper">
+        <item>scma</item>
+        <item>scmb</item>
+        <item>scpc</item>
+        <item>svt</item>
+        <item>sceco</item>
+    </string-array>
+
+    <string-array name="subjects">
+        <item>الرياضيات</item>
+        <item>اللغة العربية</item>
+        <item>الفيزياء و الكيمياء</item>
+        <item>علوم الحياة و الارض</item>
+        <item>اللغة الفرنسية</item>
+        <item>اللغة الانجليزية</item>
+        <item>الفلسفة</item>
+        <item>التربية الاسلامية</item>
+        <item>التاريخ و الجغرافيا</item>
+        <item>علوم المهندس</item>
+    </string-array>
+
+    <string-array name="subjects_helper">
+        <item>2nd;all</item>
+        <item>1st;all</item>
+        <item>2nd;all;-sceco</item>
+        <item>2nd;all;-scmb;-sceco</item>
+        <item>1st;all</item>
+        <item>2nd;all</item>
+        <item>2nd;all</item>
+        <item>1st;all</item>
+        <item>1st;all</item>
+        <item>2nd;+scmb</item>
+    </string-array>
+</resources>
