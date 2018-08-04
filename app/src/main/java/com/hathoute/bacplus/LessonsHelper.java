@@ -14,29 +14,29 @@ public class LessonsHelper {
         this.mContext = context;
     }
 
-    public List<String> formatSubjects(int Year, int Option) {
+    public List<Subject> formatSubjects(int Year, int Option) {
         String[] Subjects = mContext.getResources().getStringArray(R.array.subjects);
         String[] SubjectsTokens = mContext.getResources().getStringArray(R.array.subjects_helper);
-        String choosenYear = Year == MainActivity.YEAR_FIRST ? "1st" : "2nd";
-        String choosenOption = mContext.getResources()
+        String chosenYear = Year == MainActivity.YEAR_FIRST ? "1st" : "2nd";
+        String chosenOption = mContext.getResources()
                 .getStringArray(Year == MainActivity.YEAR_FIRST ?
                         R.array.options_firstyear_helper : R.array.options_secondyear_helper)[Option];
-        List<String> optionSubjects = new ArrayList<>();
+        List<Subject> listSubjects = new ArrayList<>();
 
         for(int i = 0; i < Subjects.length; i++) {
             List<String> TokensList = Arrays.asList(SubjectsTokens[i].split(";"));
-            if(!TokensList.contains(choosenYear)) {
+            if(!TokensList.contains(chosenYear)) {
                 continue;
             }
 
-            if(TokensList.contains("all") && !TokensList.contains("-" + choosenOption)) {
-                optionSubjects.add(Subjects[i]);
+            if(TokensList.contains("all") && !TokensList.contains("-" + chosenOption)) {
+                listSubjects.add(new Subject(mContext, Year, Option, i));
             }
-            else if(TokensList.contains("+" + choosenOption)) {
-                optionSubjects.add(Subjects[i]);
+            else if(TokensList.contains("+" + chosenOption)) {
+                listSubjects.add(new Subject(mContext, Year, Option, i));
             }
         }
 
-        return optionSubjects;
+        return listSubjects;
     }
 }

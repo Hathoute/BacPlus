@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="lessons_2nd_math">
+        <item>النهايات و الإتصال</item>
+        <item>الإشتقاق</item>
+        <item>المتتاليات العددية</item>
+        <item>الاتصال و الاشتقاق و دراسة الدوال</item>
+        <item>الدوال الاصلية</item>
+        <item>الدوال اللوغاريتمية و الأسية الجزء الأول</item>
+        <item>الأعداد العقدية الجزء الأول</item>
+        <item>الدوال اللوغاريتمية و الأسية الجزء الثاني</item>
+        <item>الأعداد العقدية الجزء الثاني</item>
+        <item>الحساب التكاملي</item>
+        <item>المعادلات التفاضلية</item>
+        <item>حساب الاحتمالات</item>
+        <item>الهندسة الفضائية</item>
+        <item>اتصال دالة عددية</item>
+        <item>الجداء السلمي في الفضاء وتطبيقاته</item>
+        <item>الجداء المتجهي</item>
+        <item>Z الحسابيات في المجموعة</item>
+        <item>الأعداد العقدية</item>
+        <item>البنيات الجبرية</item>
+        <item>الحسابيات</item>
+        <item>المخروطيات</item>
+        <item>المنحنيات من الدرجة الثانية</item>
+        <item>الدوال اللوغاريتمية</item>
+        <item>الدالة العكسية</item>
+        <item>النهايات والاتصال</item>
+        <item>دراسة الدوال</item>
+        <item>محور التماثل – مركز التماثل – نقطة الانعطاف – الفروع اللانهائية</item>
+        <item>ملخص دروس الرياضيات للسنة الثانية باكالوريا المسالك العلمية والتقنية</item>
+        <item>الفضاءات المتجهية الحقيقية</item>
+        <item>الدوال الأصلية و التكامل</item>
+        <item>المعادلات التفضالية</item>
+        <item>الإحتمالات</item>
+    </string-array>
+
+    <string-array name="lessons_2nd_math_tokens">
+        <item>scma;scmb</item>
+        <item>scma;scmb</item>
+        <item>scpc;svt;scma;scmb</item>
+        <item>scpc;svt</item>
+        <item>scpc;svt</item>
+        <item>scpc;svt</item>
+        <item>scpc;svt</item>
+        <item>scpc;svt</item>
+        <item>scpc;svt</item>
+        <item>scpc;svt</item>
+        <item>scpc;svt</item>
+        <item>scpc;svt</item>
+        <item>scpc;svt</item>
+        <item>scpc</item>
+        <item>scpc</item>
+        <item>scpc</item>
+        <item>scma;scmb</item>
+        <item>scma;scmb</item>
+        <item>scma;scmb</item>
+        <item>scma;scmb</item>
+        <item>scma;scmb</item>
+        <item>scma;scmb</item>
+        <item>scma;scmb</item>
+        <item>scpc;scma;scmb</item>
+        <item>scpc</item>
+        <item>scpc;scma;scmb</item>
+        <item>scpc</item>
+        <item>scpc</item>
+        <item>scma;scmb</item>
+        <item>scma;scmb</item>
+        <item>scma;scmb</item>
+        <item>scma;scmb</item>
+    </string-array>
+</resources>

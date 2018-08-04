@@ -47,6 +47,19 @@
         <item>علوم المهندس</item>
     </string-array>
 
+    <string-array name="subjects_abv">
+        <item>math</item>
+        <item>arabic</item>
+        <item>physics</item>
+        <item>svt</item>
+        <item>french</item>
+        <item>english</item>
+        <item>philosophy</item>
+        <item>islamic</item>
+        <item>geography</item>
+        <item>engineering</item>
+    </string-array>
+
     <string-array name="subjects_helper">
         <item>2nd;all</item>
         <item>1st;all</item>
@@ -59,4 +72,7 @@
         <item>1st;all</item>
         <item>2nd;+scmb</item>
     </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

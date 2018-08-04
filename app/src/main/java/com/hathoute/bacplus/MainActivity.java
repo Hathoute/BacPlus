@@ -1,11 +1,10 @@
 package com.hathoute.bacplus;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements YearFragment.OnCallbackReceived,
         OptionFragment.OnCallbackReceived {
@@ -51,10 +50,9 @@ public class MainActivity extends AppCompatActivity implements YearFragment.OnCa
     @Override
     public void onOptionChoice(int position) {
         iChosenOption = position;
-        LessonsHelper lessonsHelper = new LessonsHelper(this);
-        List<String> list = lessonsHelper.formatSubjects(iChosenYear, iChosenOption);
-        for(String item : list) {
-            System.out.println(item);
-        }
+        Intent intent = new Intent(getBaseContext(), SubjectsActivity.class);
+        intent.putExtra("year", iChosenYear)
+                .putExtra("option", iChosenOption);
+        startActivity(intent);
     }
 }
