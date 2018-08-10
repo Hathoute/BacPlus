@@ -5,11 +5,10 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 
 import java.util.List;
 
-public class TabbedSubjectsActivity extends AppCompatActivity {
+public class TabbedSubjectActivity extends AppCompatActivity {
 
     TabLayout tabLayout;
     private int iChosenYear;
@@ -19,7 +18,7 @@ public class TabbedSubjectsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tabbed_subjects);
+        setContentView(R.layout.activity_tabbed_subject);
 
         iChosenYear = getIntent().getIntExtra("year", 0);
         iChosenOption = getIntent().getIntExtra("option", 0);
@@ -33,13 +32,12 @@ public class TabbedSubjectsActivity extends AppCompatActivity {
 
     void configureTabs() {
         tabLayout = findViewById(R.id.tab_layout);
-        List<Subject> subjects = new LessonsHelper(this)
-                .formatSubjects(iChosenYear, iChosenOption);
-        for(Subject subject : subjects) {
-            tabLayout.addTab(tabLayout.newTab().setText(subject.getTitle()));
+        String[] tabs = this.getResources().getStringArray(R.array.subject_tabs);
+        for(String tab : tabs) {
+            tabLayout.addTab(tabLayout.newTab().setText(tab));
         }
-        tabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
-        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        tabLayout.setTabMode(TabLayout.MODE_FIXED);
 
         final ViewPager viewPager = findViewById(R.id.pager);
         final PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager(),

@@ -17,6 +17,6 @@
         android:horizontalSpacing="10dp"
         android:verticalSpacing="10dp"
         android:stretchMode="columnWidth"
-        android:numColumns="2" />
-
+        android:numColumns="auto_fit" />
+    <!-- TODO: Configure numColumns for Tablets -->
 </RelativeLayout>

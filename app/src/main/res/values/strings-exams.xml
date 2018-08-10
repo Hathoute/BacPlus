@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="exam_types">
+        <item>الامتحان الوطني</item>
+        <item>الامتحان الجهوي</item>
+        <item>فرض محروس/منزلي</item>
+    </string-array>
+
+    <string-array name="exam_sessions">
+        <item>عادية</item>
+        <item>إستدراكية</item>
+    </string-array>
+
+    <string name="exam_surveille">الامتحان رقم : $</string>
+
+    <string name="exam_session">دورة : $</string>
+
+    <string-array name="exams_2nd_math">
+        <item>exam2018.com</item>
+        <item>exam2018.com</item>
+    </string-array>
+
+    <string-array name="exams_2nd_math_years">
+        <item>2018</item>
+        <item>3018</item>
+    </string-array>
+
+    <string-array name="exams_2nd_math_tokens">
+        <item>scma;scmb</item>
+        <item>scma;scmb</item>
+    </string-array>
+</resources>

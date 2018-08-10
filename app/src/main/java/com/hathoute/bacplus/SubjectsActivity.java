@@ -5,11 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.GridView;
-import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -42,7 +38,7 @@ public class SubjectsActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent
-                        (SubjectsActivity.this, TabbedSubjectsActivity.class);
+                        (SubjectsActivity.this, TabbedSubjectActivity.class);
                 intent.putExtra("year", iChosenYear)
                         .putExtra("option", iChosenOption)
                         .putExtra("subject", position);

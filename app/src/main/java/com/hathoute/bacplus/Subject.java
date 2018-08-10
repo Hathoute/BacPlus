@@ -62,10 +62,6 @@ public class Subject {
                 .getStringArray(mContext.getResources()
                         .getIdentifier(lessonsTokensName, "array",
                                 mContext.getPackageName()));
-        System.out.println("Adding!");
-        System.out.println(lessonsTokens.length + "  " + mContext.getResources()
-                .getStringArray(Year == MainActivity.YEAR_FIRST ? R.array.options_firstyear_helper
-                        : R.array.options_secondyear_helper)[Option]);
         for(int i = 0; i < lessonsTokens.length; i++) {
             List<String> lessonTokens = Arrays.asList(lessonsTokens[i].split(";"));
             if(lessonTokens.contains(mContext.getResources()
@@ -75,6 +71,50 @@ public class Subject {
             }
         }
         return lessons;
+    }
+
+    public List<Exam> getExams() {
+        List<Exam> exams = new ArrayList<>();
+
+        String examsName = "exams_" + getYearStr() + "_" + SubjectAbv;
+        String[] examsTokens =  mContext.getResources()
+                .getStringArray(mContext.getResources()
+                        .getIdentifier(examsName + "_tokens", "array",
+                                mContext.getPackageName()));
+
+        for(int i = 0; i < examsTokens.length; i++) {
+            List<String> tokens = Arrays.asList(examsTokens[i].split(";"));
+            if(!tokens.contains(mContext.getResources()
+                    .getStringArray(Year == MainActivity.YEAR_FIRST ?
+                            R.array.options_firstyear_helper :
+                            R.array.options_secondyear_helper)[Option]))
+                continue;
+
+            exams.add(new Exam(mContext, Year, Subject, i));
+        }
+        return exams;
+    }
+
+    public List<Video> getVideos() {
+        List<Video> videos = new ArrayList<>();
+
+        String videoName = "videos_" + getYearStr() + "_" + SubjectAbv;
+        String[] videoTokens = mContext.getResources()
+                .getStringArray(mContext.getResources()
+                        .getIdentifier(videoName + "_tokens", "array",
+                                mContext.getPackageName()));
+
+        for(int i = videoTokens.length - 1; i >= 0; i--) {
+            List<String> tokens = Arrays.asList(videoTokens[i].split(";"));
+            if(!tokens.contains(mContext.getResources()
+                    .getStringArray(Year == MainActivity.YEAR_FIRST ?
+                            R.array.options_firstyear_helper :
+                            R.array.options_secondyear_helper)[Option]))
+                continue;
+
+            videos.add(new Video(mContext, Year, Subject, i));
+        }
+        return videos;
     }
 
     public int getYear() {

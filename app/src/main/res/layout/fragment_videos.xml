@@ -7,7 +7,7 @@
     tools:context=".LessonsFragment">
 
     <ListView
-        android:id="@+id/lvLessons"
+        android:id="@+id/lvVideos"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"

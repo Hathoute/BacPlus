@@ -22,13 +22,27 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        LessonsFragment lessonsFragment = new LessonsFragment();
+        Fragment tabFragment;
+        switch(position) {
+            case 0:
+                tabFragment = new LessonsFragment();
+                break;
+            case 1:
+                tabFragment = new ExamsFragment();
+                break;
+            case 2:
+                tabFragment = new VideosFragment();
+                break;
+            default:
+                tabFragment = new ExamsFragment();
+                break;
+        }
         Bundle bundle = new Bundle();
         bundle.putInt("year", Year);
         bundle.putInt("option", Option);
         bundle.putInt("subject", Subject);
-        lessonsFragment.setArguments(bundle);
-        return lessonsFragment;
+        tabFragment.setArguments(bundle);
+        return tabFragment;
     }
 
     @Override

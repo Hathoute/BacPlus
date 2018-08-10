@@ -1,6 +1,5 @@
 package com.hathoute.bacplus;
 
-
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,12 +13,9 @@ import android.widget.ListView;
 
 import java.util.List;
 
-public class LessonsFragment extends Fragment {
+public class ExamsFragment extends Fragment {
 
     private Context mContext;
-    private int iChosenYear;
-    private int iChosenOption;
-    private int iChosenSubject;
 
     @Override
     public void onAttach(Context context) {
@@ -30,27 +26,25 @@ public class LessonsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_lessons, container, false);
-        iChosenYear = getArguments().getInt("year");
-        iChosenOption = getArguments().getInt("option");
-        iChosenSubject = getArguments().getInt("subject");
+        View view = inflater.inflate(R.layout.fragment_exams, container, false);
+        int iChosenYear = getArguments().getInt("year");
+        int iChosenOption = getArguments().getInt("option");
+        int iChosenSubject = getArguments().getInt("subject");
         Subject subject = new Subject(mContext, iChosenYear, iChosenOption, iChosenSubject);
-        ListView lvLessons = view.findViewById(R.id.lvLessons);
-        final LessonsAdapter adapter = new LessonsAdapter(mContext, subject);
-        lvLessons.setAdapter(adapter);
-        lvLessons.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        ListView lvExams = view.findViewById(R.id.lvExams);
+        final ExamsAdapter adapter = new ExamsAdapter(mContext, subject);
+        lvExams.setAdapter(adapter);
+        lvExams.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                System.out.println(adapter.getItem(position).getName());
+                System.out.println(adapter.getItem(position).getExamYear());
             }
         });
         return view;
-
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
     }
 }
