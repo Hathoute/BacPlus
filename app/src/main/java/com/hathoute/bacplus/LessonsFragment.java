@@ -2,6 +2,8 @@ package com.hathoute.bacplus;
 
 
 import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -41,9 +43,15 @@ public class LessonsFragment extends Fragment {
         lvLessons.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                System.out.println(adapter.getItem(position).getName());
+                Intent intent = new Intent(mContext, LessonActivity.class);
+                intent.putExtra("year", iChosenYear)
+                        .putExtra("option", iChosenOption)
+                        .putExtra("subject", iChosenSubject)
+                        .putExtra("lesson", adapter.getItem(position).getLessonId());
+                startActivity(intent);
             }
         });
+
         return view;
 
     }

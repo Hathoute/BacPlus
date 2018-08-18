@@ -1,6 +1,8 @@
 package com.hathoute.bacplus;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.graphics.Path;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -56,20 +58,14 @@ public class Subject {
 
     public List<Lesson> getLessons() {
         List<Lesson> lessons = new ArrayList<>();
-
-        String lessonsTokensName = "lessons_" + getYearStr() + "_" + SubjectAbv + "_tokens";
-        String[] lessonsTokens = mContext.getResources()
-                .getStringArray(mContext.getResources()
-                        .getIdentifier(lessonsTokensName, "array",
-                                mContext.getPackageName()));
-        for(int i = 0; i < lessonsTokens.length; i++) {
-            List<String> lessonTokens = Arrays.asList(lessonsTokens[i].split(";"));
-            if(lessonTokens.contains(mContext.getResources()
-                    .getStringArray(Year == MainActivity.YEAR_FIRST ? R.array.options_firstyear_helper
-                            : R.array.options_secondyear_helper)[Option])) {
-                lessons.add(new Lesson(mContext, Year, Subject, i));
-            }
+        DatabaseHelper db = new DatabaseHelper(mContext);
+        Cursor cursor = db.getLessons(Subject, Year, Option);
+        if(cursor.moveToFirst()) {
+            do {
+                lessons.add(db.getLesson(Subject, cursor.getInt(0)));
+            } while (cursor.moveToNext());
         }
+
         return lessons;
     }
 

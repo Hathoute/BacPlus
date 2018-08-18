@@ -5,6 +5,20 @@
     <string name="years_notice">المرجو اختيار السنة الدراسية التي تتواجدون بها حاليا</string>
     <string name="years_first">اولا باكالوريا</string>
     <string name="years_second">ثانية باكالوريا</string>
+    <string name="file_open">مشاهدة</string>
+    <string name="file_download">تحميل</string>
+    <string name="file_delete">حذف</string>
+    <string name="download_starting">جاري التحميل</string>
+    <string name="download_size">تم تحميل $ من £</string>
+    <string name="opening_starting">المرجو الانتظار</string>
+    <string name="download_successful">تم التحميل بنجاح</string>
+    <string name="delete_notice">هل تريدون حذف الملف؟</string>
+    <string name="delete_success">تم الحدف بنجاح</string>
+    <string name="delete_fail">فشلت العملية</string>
+    <string name="back">رجوع</string>
+    <string name="open">فتح</string>
+    <string name="yes">نعم</string>
+    <string name="no">لا</string>
 
     <string name="options_title">الشعبة</string>
     <string name="options_notice">المرجو اختيار الشعبة من خلال القائمة اسفله</string>
@@ -83,6 +97,7 @@
 
     <string name="iv_contentdesc">Display Youtube thumbnail</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="string_year">السنة : $</string>
+    <string name="string_subject">المادة : $</string>
+    <string name="string_option">الشعبة : $</string>
 </resources>

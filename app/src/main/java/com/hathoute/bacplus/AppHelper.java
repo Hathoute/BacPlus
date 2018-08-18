@@ -6,13 +6,21 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.support.v4.content.FileProvider;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class AppHelper {
+
+    public static class Storage {
+        static int None = 0;
+        static int Data = 1;
+        static int Cache = 2;
+    }
 
     public static Bitmap getBitmapFromURL(String src) {
         try {

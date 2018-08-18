@@ -1,57 +1,54 @@
 package com.hathoute.bacplus;
 
+import android.content.ContentValues;
 import android.content.Context;
 
-import java.util.Arrays;
-import java.util.List;
+import java.io.File;
 
 public class Lesson {
 
-    private Context mContext;
-    private int Year;
+    private ContentValues contentValues;
     private int Subject;
-    private int Lesson;
-    private String[] SubjectAbv;
-    private String[] LessonsArray;
 
-    public Lesson(Context context, int Year, int Subject, int Lesson) {
-        this.mContext = context;
-        this.Year = Year;
+    Lesson(int Subject, ContentValues row) {
         this.Subject = Subject;
-        this.Lesson = Lesson;
-        this.SubjectAbv = mContext.getResources().getStringArray(R.array.subjects_abv);
-        String lessonsArrayName = "lessons_" + getYearStr() + "_" + SubjectAbv[Subject];
-        LessonsArray = mContext.getResources()
-                .getStringArray(mContext.getResources()
-                        .getIdentifier(lessonsArrayName, "array",
-                                mContext.getPackageName()));
+        this.contentValues = row;
     }
 
     public String getName() {
-        return LessonsArray[Lesson];
+        return contentValues.getAsString(DatabaseHelper.Columns.Title);
     }
 
     public int getYear() {
-        return this.Year;
+        return contentValues.getAsInteger(DatabaseHelper.Columns.Year);
     }
 
     public int getSubject() {
         return this.Subject;
     }
 
-    public boolean isAvailable(int Option) {
-        String lessonsTokensName = "lessons_" + getYearStr() + "_" + SubjectAbv[Subject] + "_tokens";
-        List<String> lessonTokens = Arrays.asList(mContext.getResources()
-                .getStringArray(mContext.getResources()
-                        .getIdentifier(lessonsTokensName, "array",
-                                mContext.getPackageName()))[Option].split(";"));
-
-        return lessonTokens.contains(mContext.getResources()
-                .getStringArray(Year == MainActivity.YEAR_FIRST ? R.array.options_firstyear_helper
-                        : R.array.options_secondyear_helper)[Option]);
+    public int getLessonId() {
+        return contentValues.getAsInteger("id");
     }
 
-    private String getYearStr() {
-        return Year == MainActivity.YEAR_FIRST ? "1st" : "2nd";
+    public String getOptions() {
+        return contentValues.getAsString(DatabaseHelper.Columns.Options);
+    }
+
+    public String getDirectoryPath(Context context) {
+        return "bacplus/" + context.getResources().getStringArray(R.array.subjects_abv)[Subject] +
+                "/lessons";
+    }
+
+    public int isAvailable(Context context) {
+        File file = new File(getDirectoryPath(context), getLessonId()+".pdf");
+        File cacheFile = new File(context.getCacheDir(), file.toString());
+        File dataFile = new File(context.getFilesDir(), file.toString());
+        if(dataFile.exists())
+            return AppHelper.Storage.Data;
+        else if(cacheFile.exists())
+            return AppHelper.Storage.Cache;
+        else
+            return AppHelper.Storage.None;
     }
 }

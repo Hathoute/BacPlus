@@ -24,6 +24,10 @@ public class Exam {
         return "lol"; //Todo: setup getPDFLink.
     }
 
+    public int getExamId() {
+        return this.ExamId;
+    }
+
     public int getYear() {
         return this.Year;
     }

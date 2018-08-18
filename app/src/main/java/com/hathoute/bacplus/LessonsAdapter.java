@@ -26,10 +26,6 @@ public class LessonsAdapter extends BaseAdapter {
         this.lessons = subject.getLessons();
     }
 
-    public String getName(int position) {
-        return lessons.get(position).getName();
-    }
-
     @Override
     public int getCount() {
         return lessons.size();
