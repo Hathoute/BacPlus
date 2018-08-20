@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="lesson_name">الدرس : $</string>
+
     <string-array name="lessons_2nd_math">
         <item>النهايات و الإتصال</item>
         <item>الإشتقاق</item>
