@@ -38,12 +38,9 @@ public class ExamsFragment extends Fragment {
         lvExams.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //Todo: Adapter returns Exam object, why not use it instead?
                 Intent intent = new Intent(mContext, ExamActivity.class);
-                intent.putExtra("year", iChosenYear)
-                        .putExtra("option", iChosenOption)
-                        .putExtra("subject", iChosenSubject)
-                        .putExtra("exam", adapter.getItem(position).getExamId());
+                intent.putExtra("subject", iChosenSubject)
+                        .putExtra("exam", adapter.getItem(position).getId());
                 startActivity(intent);
             }
         });

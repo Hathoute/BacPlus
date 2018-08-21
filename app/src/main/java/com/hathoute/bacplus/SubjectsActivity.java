@@ -1,6 +1,7 @@
 package com.hathoute.bacplus;
 
 import android.content.Intent;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -27,6 +28,19 @@ public class SubjectsActivity extends AppCompatActivity {
 
         lessonsHelper = new LessonsHelper(this);
         gvSubjects = findViewById(R.id.gvSubjects);
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            if (getWindow().getDecorView().getLayoutDirection() == View.LAYOUT_DIRECTION_LTR) {
+                getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+            }
+        }
+
+        try {
+            getSupportActionBar().setTitle(R.string.list_of_subjects);
+        } catch (NullPointerException ignored) {
+            ignored.printStackTrace();
+        }
+
         setupGridView();
     }
 

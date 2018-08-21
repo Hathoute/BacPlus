@@ -24,13 +24,13 @@ public class ExamsAdapter extends BaseAdapter {
         this.mContext = context;
         this.exams = subject.getExams();
         for(int i = 0; i < this.exams.size(); i++) {
-            if(this.exams.get(i).getExamYear() > 2500)
+            if(this.exams.get(i).getType() == Exam.Types.RATTRAPAGE)
                 continue;
 
             int j = 0;
             while(j < i) {
-                if(this.exams.get(j).getExamYear() < this.exams.get(i).getExamYear()
-                        || (this.exams.get(j).getExamYear()-1000 <= this.exams.get(i).getExamYear() && this.exams.get(j).getExamYear() > 2500)) {
+                if(this.exams.get(j).getExamId() < this.exams.get(i).getExamId()
+                        || (this.exams.get(j).getExamId() <= this.exams.get(i).getExamId() && this.exams.get(j).getType() > Exam.Types.RATTRAPAGE)) {
                     Exam exam = this.exams.remove(j);
                     this.exams.add(exam);
                     i--;
@@ -78,24 +78,35 @@ public class ExamsAdapter extends BaseAdapter {
 
         String ExamId;
         String[] Type = mContext.getResources().getStringArray(R.array.exam_sessions);
-        if(exam.getExamYear() < 1000)
-            ExamId = mContext.getResources()
-                    .getString(R.string.exam_surveille)
-                    .replace("$", "<b>" + (exam.getExamYear()) + "</b>");
-        else if(exam.getExamYear() > 2500)
-            ExamId = mContext.getResources()
-                    .getString(R.string.exam_session)
-                    .replace("$", "<b>" + (exam.getExamYear()-1000)
-                            + " " + Type[1] + "</b>");
-        else
-            ExamId = mContext.getResources()
-                    .getString(R.string.exam_session)
-                    .replace("$", "<b>" + (exam.getExamYear())
-                            + " " + Type[0] + "</b>");
-
+        switch(exam.getType()) {
+            case Exam.Types.CLASS:
+                ExamId = mContext.getResources()
+                        .getString(R.string.exam_surveille)
+                        .replace("$", "<b>" + (exam.getExamId()) + "</b>");
+                break;
+            case Exam.Types.RATTRAPAGE:
+                ExamId = mContext.getResources()
+                        .getString(R.string.exam_session)
+                        .replace("$", "<b>" + (exam.getExamId())
+                                + " " + Type[1] + "</b>");
+                break;
+            default: //Guaranteed to be Exam.Types.NORMAL, just for Initialization.
+                ExamId = mContext.getResources()
+                        .getString(R.string.exam_session)
+                        .replace("$", "<b>" + (exam.getExamId())
+                                + " " + Type[0] + "</b>");
+                break;
+        }
         viewHolder.tvExamId.setText(Html.fromHtml(ExamId));
+        int arrayid;
+        if(exam.getType() == Exam.Types.CLASS)
+            arrayid = 2;
+        else if(exam.getYear() == MainActivity.YEAR_FIRST)
+            arrayid = 1;
+        else
+            arrayid = 0;
         viewHolder.tvExamType.setText(mContext.getResources()
-                .getStringArray(R.array.exam_types)[exam.getType()]);
+                .getStringArray(R.array.exam_types)[arrayid]);
         // Return the completed view to render on screen
         return convertView;
     }

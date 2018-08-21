@@ -87,6 +87,8 @@
         <item>2nd;+scmb</item>
     </string-array>
 
+    <string name="list_of_subjects">لائحة المواد</string>
+
     <string-array name="subject_tabs">
         <item>دروس</item>
         <item>امتحانات</item>

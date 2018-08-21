@@ -19,7 +19,7 @@ public class DatabaseHelper {
     private static final String TAG = "lols";
 
     private static final String DATABASE_NAME = "bacdata";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 4;
 
     private final Context context;
     private boolean createDb = false, upgradeDb = false;
@@ -32,6 +32,8 @@ public class DatabaseHelper {
         public static final String Year = "YEAR";
         public static final String Options = "OPTIONS";
         public static final String Link = "LINK";
+        public static final String ExamId = "EXAMID";
+        public static final String Type = "TYPE";
     }
 
     public DatabaseHelper(Context context) {
@@ -185,8 +187,71 @@ public class DatabaseHelper {
         return lesson;
     }
 
+    public Cursor getExams(int Subject) {
+        SQLiteDatabase db = _openHelper.getReadableDatabase();
+        if (db == null) {
+            return null;
+        }
+        String sqlQuery = "select id from " + formatExamTable(subjects[Subject]) + " order by id";
+        return db.rawQuery(sqlQuery, null);
+    }
+
+    public Cursor getExams(int Subject, int Year) {
+        SQLiteDatabase db = _openHelper.getReadableDatabase();
+        if (db == null) {
+            return null;
+        }
+        String sqlQuery = "select id from " + formatExamTable(subjects[Subject]) + " where " + Columns.Year + " = ? order by id";
+        return db.rawQuery(sqlQuery, new String[] {String.valueOf(Year)});
+    }
+
+    public Cursor getExams(int Subject, int Year, int Option) {
+        SQLiteDatabase db = _openHelper.getReadableDatabase();
+        if (db == null) {
+            return null;
+        }
+        String[] Options = context.getResources().getStringArray(Year == MainActivity.YEAR_FIRST ?
+                R.array.options_firstyear_helper : R.array.options_secondyear_helper);
+        String sqlQuery = "select id from " + formatExamTable(subjects[Subject]) + " where " + Columns.Year + " = ? " +
+                "and " + Columns.Options + " like '%$%' order by id";
+        return db.rawQuery(sqlQuery.replace("$", Options[Option]), new String[] {String.valueOf(Year)});
+    }
+
+    public Exam getExam(int Subject, int id) {
+        SQLiteDatabase db = _openHelper.getReadableDatabase();
+        //Todo: Configure returned null in other methods.
+        if(db == null) {
+            return null;
+        }
+        Cursor cur = db.rawQuery("select * from " + formatExamTable(subjects[Subject]) +
+                " where id = ?", new String[] {String.valueOf(id)});
+        ContentValues cv = new ContentValues();
+
+        Exam exam;
+        cur.moveToFirst();
+        try {
+            cv.put("id", cur.getInt(0));
+            cv.put(Columns.Year, cur.getInt(1));
+            cv.put(Columns.Options, cur.getString(2));
+            cv.put(Columns.Type, cur.getInt(3));
+            cv.put(Columns.ExamId, cur.getInt(4));
+        } catch(Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        exam = new Exam(Subject, cv);
+        cur.close();
+        db.close();
+        return exam;
+    }
+
     private static String formatLessonTable(String subject) {
         //Todo: Configure multilanguage subjects;
         return "lessons_" + subject + "_arab";
+    }
+
+    private static String formatExamTable(String subject) {
+        //Todo: Configure multilanguage subjects;
+        return "exams_" + subject + "_arab";
     }
 }

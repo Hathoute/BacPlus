@@ -44,9 +44,7 @@ public class LessonsFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(mContext, LessonActivity.class);
-                intent.putExtra("year", iChosenYear)
-                        .putExtra("option", iChosenOption)
-                        .putExtra("subject", iChosenSubject)
+                intent.putExtra("subject", iChosenSubject)
                         .putExtra("lesson", adapter.getItem(position).getLessonId());
                 startActivity(intent);
             }

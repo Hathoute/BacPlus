@@ -72,21 +72,12 @@ public class Subject {
     public List<Exam> getExams() {
         List<Exam> exams = new ArrayList<>();
 
-        String examsName = "exams_" + getYearStr() + "_" + SubjectAbv;
-        String[] examsTokens =  mContext.getResources()
-                .getStringArray(mContext.getResources()
-                        .getIdentifier(examsName + "_tokens", "array",
-                                mContext.getPackageName()));
-
-        for(int i = 0; i < examsTokens.length; i++) {
-            List<String> tokens = Arrays.asList(examsTokens[i].split(";"));
-            if(!tokens.contains(mContext.getResources()
-                    .getStringArray(Year == MainActivity.YEAR_FIRST ?
-                            R.array.options_firstyear_helper :
-                            R.array.options_secondyear_helper)[Option]))
-                continue;
-
-            exams.add(new Exam(mContext, Year, Subject, i));
+        DatabaseHelper db = new DatabaseHelper(mContext);
+        Cursor cursor = db.getExams(Subject, Year, Option);
+        if(cursor.moveToFirst()) {
+            do {
+                exams.add(db.getExam(Subject, cursor.getInt(0)));
+            } while (cursor.moveToNext());
         }
         return exams;
     }

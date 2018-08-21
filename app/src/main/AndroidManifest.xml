@@ -33,7 +33,6 @@
             android:excludeFromRecents="true"
             android:taskAffinity=""
             android:theme="@style/Theme.Sliding.Light"/>
-
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.hathoute.bacplus.provider"
