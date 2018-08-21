@@ -2,6 +2,7 @@ package com.hathoute.bacplus;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.res.AssetFileDescriptor;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -16,13 +17,10 @@ import java.util.List;
 
 public class DatabaseHelper {
 
-    private static final String TAG = "lols";
-
-    private static final String DATABASE_NAME = "bacdata";
-    private static final int DATABASE_VERSION = 4;
+    public static final String DATABASE_NAME = "bacdata";
+    public static final int DATABASE_VERSION = 7;
 
     private final Context context;
-    private boolean createDb = false, upgradeDb = false;
 
     private final SQLiteOpenHelper _openHelper;
     private final String[] subjects;
@@ -42,58 +40,6 @@ public class DatabaseHelper {
         subjects = context.getResources().getStringArray(R.array.subjects_abv);
     }
 
-    private void copyDatabaseFromAssets(SQLiteDatabase db) {
-        Log.i(TAG, "copyDatabase");
-        InputStream myInput = null;
-        OutputStream myOutput = null;
-        try {
-            // Open db packaged as asset as the input stream
-            myInput = context.getAssets().open(DATABASE_NAME + ".db");
-
-            // Open the db in the application package context:
-            myOutput = new FileOutputStream(db.getPath());
-
-            File file = new File(db.getPath(), DATABASE_NAME + ".db");
-            if(file.exists()) {
-                if(file.delete())
-                    Log.i(TAG, "File Deleted!");
-                else
-                    Log.e(TAG, "File exists, but not deleted!");
-            }
-
-            // Transfer db file contents:
-            byte[] buffer = new byte[1024];
-            int length;
-            while ((length = myInput.read(buffer)) > 0) {
-                myOutput.write(buffer, 0, length);
-            }
-            myOutput.flush();
-
-            // Set the version of the copied database to the current
-            // version:
-            SQLiteDatabase copiedDb = context.openOrCreateDatabase(
-                    DATABASE_NAME, 0, null);
-            copiedDb.execSQL("PRAGMA user_version = " + DATABASE_VERSION);
-            copiedDb.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new Error(TAG + " Error copying database");
-        } finally {
-            // Close the streams
-            try {
-                if (myOutput != null) {
-                    myOutput.close();
-                }
-                if (myInput != null) {
-                    myInput.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-                throw new Error(TAG + " Error closing streams");
-            }
-        }
-    }
     class SimpleSQLiteOpenHelper extends SQLiteOpenHelper {
         SimpleSQLiteOpenHelper(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -101,31 +47,14 @@ public class DatabaseHelper {
 
         @Override
         public void onCreate(SQLiteDatabase db) {
-            createDb = true;
         }
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            upgradeDb = true;
         }
 
         @Override
         public void onOpen(SQLiteDatabase db) {
-            Log.i(TAG, "onOpen db");
-            if (createDb) {// The db in the application package
-                // context is being created.
-                // So copy the contents from the db
-                // file packaged in the assets
-                // folder:
-                createDb = false;
-                copyDatabaseFromAssets(db);
-
-            }
-            if (upgradeDb) {// The db in the application package
-                // context is being upgraded from a lower to a higher version.
-                upgradeDb = false;
-                copyDatabaseFromAssets(db);
-            }
         }
     }
 

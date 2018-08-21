@@ -28,24 +28,29 @@
             android:name=".LessonActivity"
             android:excludeFromRecents="true"
             android:taskAffinity=""
-            android:theme="@style/Theme.Sliding.Light"/>
-        <activity android:name=".ExamActivity"
+            android:theme="@style/Theme.Sliding.Light" />
+        <activity
+            android:name=".ExamActivity"
             android:excludeFromRecents="true"
             android:taskAffinity=""
-            android:theme="@style/Theme.Sliding.Light"/>
+            android:theme="@style/Theme.Sliding.Light" />
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.hathoute.bacplus.provider"
             android:exported="false"
             android:grantUriPermissions="true">
+
             <!-- ressource file to create -->
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths">
-            </meta-data>
+                android:resource="@xml/provider_paths"></meta-data>
         </provider>
 
-        <service android:name=".OnAppDestroyedService" android:stopWithTask="false" />
+        <service
+            android:name=".OnAppDestroyedService"
+            android:stopWithTask="false" />
+
     </application>
 
 </manifest>
