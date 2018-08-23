@@ -2,7 +2,6 @@ package com.hathoute.bacplus;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.graphics.Path;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -58,7 +57,7 @@ public class Subject {
 
     public List<Lesson> getLessons() {
         List<Lesson> lessons = new ArrayList<>();
-        DatabaseHelper db = new DatabaseHelper(mContext);
+        BacDataDBHelper db = new BacDataDBHelper(mContext);
         Cursor cursor = db.getLessons(Subject, Year, Option);
         if(cursor.moveToFirst()) {
             do {
@@ -72,7 +71,7 @@ public class Subject {
     public List<Exam> getExams() {
         List<Exam> exams = new ArrayList<>();
 
-        DatabaseHelper db = new DatabaseHelper(mContext);
+        BacDataDBHelper db = new BacDataDBHelper(mContext);
         Cursor cursor = db.getExams(Subject, Year, Option);
         if(cursor.moveToFirst()) {
             do {

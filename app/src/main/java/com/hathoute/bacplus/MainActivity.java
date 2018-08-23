@@ -14,8 +14,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import static com.hathoute.bacplus.DatabaseHelper.DATABASE_NAME;
-import static com.hathoute.bacplus.DatabaseHelper.DATABASE_VERSION;
+import static com.hathoute.bacplus.BacDataDBHelper.DATABASE_NAME;
+import static com.hathoute.bacplus.BacDataDBHelper.DATABASE_VERSION;
 
 public class MainActivity extends AppCompatActivity implements YearFragment.OnCallbackReceived,
         OptionFragment.OnCallbackReceived {
@@ -34,6 +34,8 @@ public class MainActivity extends AppCompatActivity implements YearFragment.OnCa
         startService(new Intent(getBaseContext(), OnAppDestroyedService.class));
         //Todo: Move checkDatabase to a better place.
         checkDatabase(this);
+        Intent intent = new Intent(this, OfflineDocsActivity.class);
+        startActivity(intent);
         showYears();
     }
 

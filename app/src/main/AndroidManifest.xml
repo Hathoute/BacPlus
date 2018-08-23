@@ -44,13 +44,15 @@
             <!-- ressource file to create -->
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths"></meta-data>
+                android:resource="@xml/provider_paths" />
         </provider>
 
         <service
             android:name=".OnAppDestroyedService"
             android:stopWithTask="false" />
 
+        <activity android:name=".OfflineDocsActivity"
+            android:theme="@style/NoActionBar" />
     </application>
 
 </manifest>

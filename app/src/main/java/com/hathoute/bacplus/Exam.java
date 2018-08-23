@@ -26,19 +26,19 @@ public class Exam {
     }
 
     public int getExamId() {
-        return cv.getAsInteger(DatabaseHelper.Columns.ExamId);
+        return cv.getAsInteger(BacDataDBHelper.Columns.ExamId);
     }
 
     public int getYear() {
-        return cv.getAsInteger(DatabaseHelper.Columns.Year);
+        return cv.getAsInteger(BacDataDBHelper.Columns.Year);
     }
 
     public int getType() {
-        return cv.getAsInteger(DatabaseHelper.Columns.Type);
+        return cv.getAsInteger(BacDataDBHelper.Columns.Type);
     }
 
     public String getOptions() {
-        return cv.getAsString(DatabaseHelper.Columns.Options);
+        return cv.getAsString(BacDataDBHelper.Columns.Options);
     }
 
     public int getSubject() {

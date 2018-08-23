@@ -10,7 +10,6 @@ import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.webkit.DownloadListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -33,7 +32,7 @@ public class ExamActivity extends SlidingActivity implements DownloadsManager.On
         setContent(R.layout.activity_exam);
         int iChosenSubject = getIntent().getIntExtra("subject", 0);
         int iChosenExam = getIntent().getIntExtra("exam", 0);
-        exam = new DatabaseHelper(this).getExam(iChosenSubject, iChosenExam);
+        exam = new BacDataDBHelper(this).getExam(iChosenSubject, iChosenExam);
         resources = this.getResources();
         setupViews();
         setupListeners();

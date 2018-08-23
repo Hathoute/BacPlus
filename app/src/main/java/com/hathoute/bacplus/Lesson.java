@@ -16,23 +16,23 @@ public class Lesson {
     }
 
     public String getName() {
-        return contentValues.getAsString(DatabaseHelper.Columns.Title);
+        return contentValues.getAsString(BacDataDBHelper.Columns.Title);
     }
 
     public int getYear() {
-        return contentValues.getAsInteger(DatabaseHelper.Columns.Year);
+        return contentValues.getAsInteger(BacDataDBHelper.Columns.Year);
     }
 
     public int getSubject() {
         return this.Subject;
     }
 
-    public int getLessonId() {
+    public int getId() {
         return contentValues.getAsInteger("id");
     }
 
     public String getOptions() {
-        return contentValues.getAsString(DatabaseHelper.Columns.Options);
+        return contentValues.getAsString(BacDataDBHelper.Columns.Options);
     }
 
     public String getDirectoryPath(Context context) {
@@ -41,7 +41,7 @@ public class Lesson {
     }
 
     public int isAvailable(Context context) {
-        File file = new File(getDirectoryPath(context), getLessonId()+".pdf");
+        File file = new File(getDirectoryPath(context), getId()+".pdf");
         File cacheFile = new File(context.getCacheDir(), file.toString());
         File dataFile = new File(context.getFilesDir(), file.toString());
         if(dataFile.exists())

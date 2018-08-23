@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.FileProvider;
 import android.text.Html;
@@ -33,7 +32,7 @@ public class LessonActivity extends SlidingActivity implements DownloadsManager.
         setContent(R.layout.activity_lesson);
         int iChosenSubject = getIntent().getIntExtra("subject", 0);
         int iChosenLesson = getIntent().getIntExtra("lesson", 0);
-        lesson = new DatabaseHelper(this).getLesson(iChosenSubject, iChosenLesson);
+        lesson = new BacDataDBHelper(this).getLesson(iChosenSubject, iChosenLesson);
         resources = this.getResources();
         setupViews();
         setupListeners();
@@ -63,7 +62,7 @@ public class LessonActivity extends SlidingActivity implements DownloadsManager.
                 if(lesson.isAvailable(LessonActivity.this) == AppHelper.Storage.None) {
                     new DownloadsManager(LessonActivity.this, false)
                             .execute(lesson.getDirectoryPath(LessonActivity.this),
-                                    String.valueOf(lesson.getLessonId()));
+                                    String.valueOf(lesson.getId()));
                 }
                 else {
                     Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -71,7 +70,7 @@ public class LessonActivity extends SlidingActivity implements DownloadsManager.
                             .isAvailable(LessonActivity.this) == AppHelper.Storage.Cache ?
                             getCacheDir() : getFilesDir(),
                             lesson.getDirectoryPath(LessonActivity.this));
-                    File pdfFile = new File(pdfdir, lesson.getLessonId() + ".pdf");
+                    File pdfFile = new File(pdfdir, lesson.getId() + ".pdf");
                     //intent.setDataAndType(Uri.fromFile(pdfFile), "application/pdf");
                     intent.setDataAndType(FileProvider.getUriForFile(LessonActivity.this,
                             LessonActivity.this.getApplicationContext().getPackageName() + ".provider",
@@ -99,7 +98,7 @@ public class LessonActivity extends SlidingActivity implements DownloadsManager.
                 public void onClick(View v) {
                     new DownloadsManager(LessonActivity.this, true)
                             .execute(lesson.getDirectoryPath(LessonActivity.this),
-                                    String.valueOf(lesson.getLessonId()));
+                                    String.valueOf(lesson.getId()));
                     isProcessing = true;
                 }
             });
@@ -150,7 +149,7 @@ public class LessonActivity extends SlidingActivity implements DownloadsManager.
             public void onClick(View v) {
                 File file = new File(getFilesDir(),
                         lesson.getDirectoryPath(LessonActivity.this) + "/" +
-                                lesson.getLessonId() + ".pdf");
+                                lesson.getId() + ".pdf");
                 tvNotice.setText(file.delete() ? R.string.delete_success : R.string.delete_fail);
                 bCancel.setText(R.string.back);
                 bConfirm.setVisibility(View.GONE);
