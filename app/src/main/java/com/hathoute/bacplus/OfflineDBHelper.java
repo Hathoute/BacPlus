@@ -106,6 +106,14 @@ public class OfflineDBHelper {
         return db.delete(getTable(Table), whereClause, whereArgs) > 0;
     }
 
+    public void clear(int Table) {
+        SQLiteDatabase db = _openHelper.getWritableDatabase();
+        if (db == null)
+            return;
+
+        db.delete(getTable(Table), null, null);
+    }
+
     public Cursor get(int Table) {
         SQLiteDatabase db = _openHelper.getReadableDatabase();
         if (db == null) {

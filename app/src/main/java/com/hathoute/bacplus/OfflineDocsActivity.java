@@ -2,10 +2,13 @@ package com.hathoute.bacplus;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.database.Cursor;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.constraint.Group;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -15,11 +18,23 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
+import android.widget.Toast;
 
-public class OfflineDocsActivity extends AppCompatActivity {
+import org.apache.commons.io.FilenameUtils;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
+public class OfflineDocsActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener{
 
     private DrawerLayout dlOffline;
     private ActionBarDrawerToggle drawerToggle;
+    private int iAdded;
+    private int[] menuIdList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,16 +58,37 @@ public class OfflineDocsActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
 
         populateNavView();
+        new OfflineDBHelper(this).clear(OfflineDBHelper.AVAILABLE);
+        scanOffline(getFilesDir());
+
+        showNotice();
+    }
+
+    public void showNotice() {
+        Fragment fragment = new NoticeFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt("available", iAdded);
+        fragment.setArguments(bundle);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.content_frame, fragment, "NOTICE")
+                .commit();
     }
 
     private void populateNavView() {
         //Prepare NavigationView items
         NavigationView nvOffline = findViewById(R.id.nvOffline);
+        nvOffline.setNavigationItemSelectedListener(this);
         Menu menu = nvOffline.getMenu();
         SubMenu submenu = menu.getItem(2).getSubMenu();
         submenu.clear();
 
-        //Todo: Add items to Navigation View.
+        List<Integer> idList = formatSubjects();
+        String[] subjectNames = getResources().getStringArray(R.array.subjects);
+        for(Integer id : idList) {
+            //Todo: Design Icons.
+            submenu.add(0, id, 1, subjectNames[id]);
+        }
     }
 
     @Override
@@ -71,5 +107,93 @@ public class OfflineDocsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         return super.onOptionsItemSelected(item);
 
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        Fragment fragment;
+        switch(item.getItemId()) {
+            case R.id.nav_lastseen:
+                fragment = new LastSeenFragment();
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.content_frame, fragment, "LAST")
+                        .commit();
+                break;
+            case R.id.nav_allfiles:
+                break;
+            default:
+                break;
+        }
+        return true;
+    }
+
+    private void scanOffline(File rootFolder) {
+        iAdded = 0;
+        try {
+            File[] files = rootFolder.listFiles(); //here you will get NPE if directory doesn't contains  any file,handle it like this.
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    System.out.println("AAEZA | FILE NAME: " + file.getName());
+                    subScanOffline(file);
+                } else if (file.getName().endsWith(".pdf")) {
+                    System.out.println("AAEZA | FOUND FILE: " + file.getName());
+                    addAppropriateDoc(file);
+                    iAdded++;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            System.out.println("AAEZA | ADDED: " + iAdded + " Document as Available!");
+        }
+    }
+
+    private void subScanOffline(File rootFolder) {
+        try {
+            File[] files = rootFolder.listFiles(); //here you will get NPE if directory doesn't contains  any file,handle it like this.
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    System.out.println("AAEZA | subFILE NAME: " + file.getName());
+                    subScanOffline(file);
+                } else if (file.getName().endsWith(".pdf")) {
+                    System.out.println("AAEZA | subFOUND FILE: " + file.getName());
+                    addAppropriateDoc(file);
+                    iAdded++;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void addAppropriateDoc(File doc) {
+        int docId = Integer.valueOf(FilenameUtils.getBaseName(doc.getName()));
+        File typeDir = doc.getParentFile();
+        String typeName = typeDir.getName();
+        String subjectAbv = typeDir.getParentFile().getName();
+        int subjectId = AppHelper.getSubjectIDbyAbv(this, subjectAbv);
+        Object document;
+        if(typeName.equals("lessons"))
+            document = new BacDataDBHelper(this).getLesson(subjectId, docId);
+        else
+            document = new BacDataDBHelper(this).getExam(subjectId, docId);
+
+        if(new OfflineDBHelper(this).add(OfflineDBHelper.AVAILABLE, document))
+            System.out.println("AAEZA | Added!");
+    }
+
+    private List<Integer> formatSubjects() {
+        List<Integer> idList = new ArrayList<>();
+        Cursor cursor = new OfflineDBHelper(this).get(OfflineDBHelper.AVAILABLE);
+        if(cursor.moveToFirst()) {
+            do {
+                Integer id = cursor.getInt(2);
+                if(!idList.contains(id))
+                    idList.add(id);
+            } while(cursor.moveToNext());
+        }
+        Collections.sort(idList);
+        return idList;
     }
 }

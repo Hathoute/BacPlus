@@ -20,7 +20,7 @@ import com.klinker.android.sliding.SlidingActivity;
 
 import java.io.File;
 
-public class LessonActivity extends SlidingActivity implements DownloadsManager.OnCallbackReceived {
+public class LessonActivity extends SlidingActivity {
 
     private Lesson lesson;
     private Resources resources;
@@ -59,31 +59,8 @@ public class LessonActivity extends SlidingActivity implements DownloadsManager.
         openFile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(lesson.isAvailable(LessonActivity.this) == AppHelper.Storage.None) {
-                    new DownloadsManager(LessonActivity.this, false)
-                            .execute(lesson.getDirectoryPath(LessonActivity.this),
-                                    String.valueOf(lesson.getId()));
-                }
-                else {
-                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                    File pdfdir = new File(lesson
-                            .isAvailable(LessonActivity.this) == AppHelper.Storage.Cache ?
-                            getCacheDir() : getFilesDir(),
-                            lesson.getDirectoryPath(LessonActivity.this));
-                    File pdfFile = new File(pdfdir, lesson.getId() + ".pdf");
-                    //intent.setDataAndType(Uri.fromFile(pdfFile), "application/pdf");
-                    intent.setDataAndType(FileProvider.getUriForFile(LessonActivity.this,
-                            LessonActivity.this.getApplicationContext().getPackageName() + ".provider",
-                            pdfFile), "application/pdf");
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    Intent intent1 = Intent.createChooser(intent, "Open With");
-                    try {
-                        startActivity(intent1);
-                    } catch (ActivityNotFoundException e) {
-                        Toast.makeText(LessonActivity.this, "NOTHING", Toast.LENGTH_SHORT).show();
-                        //Todo: Set Message to download PDF Reader
-                    }
+                if(!lesson.open(LessonActivity.this)) {
+                    lesson.download(LessonActivity.this, true);
                 }
             }
         });
@@ -96,10 +73,7 @@ public class LessonActivity extends SlidingActivity implements DownloadsManager.
             downloadFile.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    new DownloadsManager(LessonActivity.this, true)
-                            .execute(lesson.getDirectoryPath(LessonActivity.this),
-                                    String.valueOf(lesson.getId()));
-                    isProcessing = true;
+                    lesson.download(LessonActivity.this, false);
                 }
             });
         }
@@ -112,70 +86,9 @@ public class LessonActivity extends SlidingActivity implements DownloadsManager.
             deleteFile.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    showDeleteDialog();
+                    lesson.deleteDialog(LessonActivity.this);
                 }
             });
-        }
-    }
-
-    void showDeleteDialog() {
-        final Dialog dDelete = new Dialog(LessonActivity.this);
-        dDelete.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dDelete.setContentView(R.layout.dialog_download);
-        dDelete.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
-        final TextView tvNotice = dDelete.findViewById(R.id.tvNotice);
-        final ProgressBar pbLoading = dDelete.findViewById(R.id.pbLoading);
-        pbLoading.setVisibility(View.GONE);
-        final Button bCancel = dDelete.findViewById(R.id.bCancel);
-        final Button bConfirm = dDelete.findViewById(R.id.bOpen);
-
-        tvNotice.setText(R.string.delete_notice);
-        bCancel.setText(R.string.no);
-        bConfirm.setText(R.string.yes);
-
-        dDelete.setCanceledOnTouchOutside(false);
-        dDelete.show();
-
-        bCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dDelete.dismiss();
-            }
-        });
-
-        bConfirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                File file = new File(getFilesDir(),
-                        lesson.getDirectoryPath(LessonActivity.this) + "/" +
-                                lesson.getId() + ".pdf");
-                tvNotice.setText(file.delete() ? R.string.delete_success : R.string.delete_fail);
-                bCancel.setText(R.string.back);
-                bConfirm.setVisibility(View.GONE);
-            }
-        });
-
-        //Todo: Set back click listener to give user choice (double click).
-    }
-
-    @Override
-    public void onDownloadFinished(File pdfFile, boolean isDownload) {
-        if(!isDownload) {
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            //intent.setDataAndType(Uri.fromFile(pdfFile), "application/pdf");
-            intent.setDataAndType(FileProvider.getUriForFile(LessonActivity.this,
-                    LessonActivity.this.getApplicationContext().getPackageName() + ".provider",
-                    pdfFile), "application/pdf");
-            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            Intent intent1 = Intent.createChooser(intent, "Open With");
-            try {
-                LessonActivity.this.startActivity(intent1);
-            } catch (ActivityNotFoundException e) {
-                Toast.makeText(LessonActivity.this, "NOTHING", Toast.LENGTH_SHORT).show();
-                //Todo: Set Message to download PDF Reader
-            }
         }
     }
 }

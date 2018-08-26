@@ -3,7 +3,7 @@
 
     <string name="years_title">السنة الدراسية</string>
     <string name="years_notice">المرجو اختيار السنة الدراسية التي تتواجدون بها حاليا</string>
-    <string name="years_first">اولا باكالوريا</string>
+    <string name="years_first">اولى باكالوريا</string>
     <string name="years_second">ثانية باكالوريا</string>
     <string name="file_open">مشاهدة</string>
     <string name="file_download">تحميل</string>
@@ -19,6 +19,7 @@
     <string name="open">فتح</string>
     <string name="yes">نعم</string>
     <string name="no">لا</string>
+    <string name="number">رقم</string>
 
     <string name="options_title">الشعبة</string>
     <string name="options_notice">المرجو اختيار الشعبة من خلال القائمة اسفله</string>
@@ -107,6 +108,11 @@
     <string name="string_year">السنة : $</string>
     <string name="string_subject">المادة : $</string>
     <string name="string_option">الشعبة : $</string>
+
+    <string name="offline_notice">هنا ستجدون جميع الملفات التي قمتم بتحميلها من خلال التطبيق.
+
+للبدء، المرجو الضعط على $الزر على اليمين فوق النافدة£.</string>
+    <string name="offline_available">عدد الملفات المتاحة: $</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

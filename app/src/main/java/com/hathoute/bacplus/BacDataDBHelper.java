@@ -18,7 +18,7 @@ import java.util.List;
 public class BacDataDBHelper {
 
     public static final String DATABASE_NAME = "bacdata";
-    public static final int DATABASE_VERSION = 7;
+    public static final int DATABASE_VERSION = 10;
 
     private final Context context;
 
@@ -56,6 +56,10 @@ public class BacDataDBHelper {
         @Override
         public void onOpen(SQLiteDatabase db) {
         }
+    }
+
+    public void readifyDB() {
+        copyDatabaseFromAssets();
     }
 
     public Cursor getLessons(int Subject) {
@@ -174,13 +178,63 @@ public class BacDataDBHelper {
         return exam;
     }
 
+    public void copyDatabaseFromAssets() {
+        InputStream myInput = null;
+        OutputStream myOutput = null;
+        try {
+            // Open db packaged as asset as the input stream
+            myInput = context.getAssets().open(DATABASE_NAME + ".db");
+
+            // Open the db in the application package context:
+            myOutput = new FileOutputStream(context.getDatabasePath(DATABASE_NAME));
+            File file = new File(context.getDatabasePath(DATABASE_NAME), DATABASE_NAME + ".db");
+            if(file.exists()) {
+                file.delete();
+            }
+
+            // Transfer db file contents:
+            byte[] buffer = new byte[1024];
+            int length;
+            int i = 0;
+            while ((length = myInput.read(buffer)) > 0) {
+                myOutput.write(buffer, 0, length);
+                i += length;
+
+            }
+
+            myOutput.flush();
+
+            // Set the version of the copied database to the current
+            // version:
+            SQLiteDatabase copiedDb = context.openOrCreateDatabase(
+                    DATABASE_NAME, 0, null);
+            copiedDb.execSQL("PRAGMA user_version = " + DATABASE_VERSION);
+            copiedDb.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            // Close the streams
+            try {
+                if (myOutput != null) {
+                    myOutput.close();
+                }
+                if (myInput != null) {
+                    myInput.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     private static String formatLessonTable(String subject) {
         //Todo: Configure multilanguage subjects;
-        return "lessons_" + subject + "_arab";
+        return "lessons_" + subject;
     }
 
     private static String formatExamTable(String subject) {
         //Todo: Configure multilanguage subjects;
-        return "exams_" + subject + "_arab";
+        return "exams_" + subject;
     }
 }

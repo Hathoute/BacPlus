@@ -24,11 +24,10 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class DownloadsManager extends AsyncTask<String, Integer, String> {
-
-    OnCallbackReceived mCallback;
+public class DownloadsManager extends AsyncTask<Void, Integer, String> {
 
     private final Context context;
+    private final Object object;
     private final boolean isDownload;
     private PowerManager.WakeLock mWakeLock;
     private ViewHolder viewHolder;
@@ -43,15 +42,15 @@ public class DownloadsManager extends AsyncTask<String, Integer, String> {
         Button bCancel;
     }
 
-    public DownloadsManager(Context context, boolean isDownload) {
+    public DownloadsManager(Context context, Object object, boolean isDownload) {
         this.context = context;
+        this.object = object;
         this.isDownload = isDownload;
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        mCallback = (OnCallbackReceived) context;
         // take CPU lock to prevent CPU from going off if the user
         // presses the power button during download
         PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
@@ -63,11 +62,22 @@ public class DownloadsManager extends AsyncTask<String, Integer, String> {
     }
 
     @Override
-    protected String doInBackground(String... params) {
+    protected String doInBackground(Void... voids) {
         InputStream input = null;
         OutputStream output = null;
         HttpURLConnection connection = null;
         try {
+            String[] params = new String[2];
+
+            if(object instanceof Lesson) {
+                params[0] = ((Lesson) object).getDirectoryPath(context);
+                params[1] = String.valueOf(((Lesson) object).getId());
+            }
+            else {
+                params[0] = ((Exam) object).getDirectoryPath(context);
+                params[1] = String.valueOf(((Exam) object).getId());
+            }
+
             String directory = params[0];
             String name = params[1] + ".pdf";
             URL url = new URL(hostURL + directory + "/" + name);
@@ -111,7 +121,7 @@ public class DownloadsManager extends AsyncTask<String, Integer, String> {
                 }
                 total += count;
                 // publishing the progress....
-                if (fileLength > 0) // only if total length is known
+                if (fileLength > 0 && isDownload) // only if total length is known && is download
                     publishProgress((int) total, fileLength);
                 output.write(data, 0, count);
             }
@@ -137,14 +147,12 @@ public class DownloadsManager extends AsyncTask<String, Integer, String> {
     protected void onProgressUpdate(Integer... progress) {
         super.onProgressUpdate(progress);
         // if we get here, length is known, now set indeterminate to false
-        if(isDownload) {
-            viewHolder.tvNotice.setText(context.getResources().getString(R.string.download_size)
-                    .replace("$", String.valueOf(progress[0]))
-                    .replace("£", String.valueOf(progress[1])));
-            viewHolder.pbLoading.setIndeterminate(false);
-            viewHolder.pbLoading.setMax(100);
-            viewHolder.pbLoading.setProgress((progress[0] * 100 / progress[1]));
-        }
+        viewHolder.tvNotice.setText(context.getResources().getString(R.string.download_size)
+                .replace("$", String.valueOf(progress[0]))
+                .replace("£", String.valueOf(progress[1])));
+        viewHolder.pbLoading.setIndeterminate(false);
+        viewHolder.pbLoading.setMax(100);
+        viewHolder.pbLoading.setProgress((progress[0] * 100 / progress[1]));
     }
 
     @Override
@@ -158,7 +166,12 @@ public class DownloadsManager extends AsyncTask<String, Integer, String> {
             Toast.makeText(context, "File downloaded", Toast.LENGTH_SHORT).show();
             viewHolder.tvNotice.setText(R.string.download_successful);
             viewHolder.bOpen.setEnabled(true);
-            mCallback.onDownloadFinished(pdfFile, isDownload);
+            if(!isDownload) {
+                if (object instanceof Lesson)
+                    ((Lesson) object).open(context);
+                else
+                    ((Exam) object).open(context);
+            }
         }
     }
 
@@ -208,9 +221,5 @@ public class DownloadsManager extends AsyncTask<String, Integer, String> {
             }
         });
         //Todo: Set back click listener to give user choice (double click).
-    }
-
-    public interface OnCallbackReceived {
-        void onDownloadFinished(File file, boolean isDownload);
     }
 }
