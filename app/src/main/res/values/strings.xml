@@ -15,11 +15,14 @@
     <string name="delete_notice">هل تريدون حذف الملف؟</string>
     <string name="delete_success">تم الحدف بنجاح</string>
     <string name="delete_fail">فشلت العملية</string>
+    <string name="delete_history">هل تريدون حدف جميع السجلات؟\nلا يمكنكم التراجع عن هذا</string>
     <string name="back">رجوع</string>
     <string name="open">فتح</string>
     <string name="yes">نعم</string>
     <string name="no">لا</string>
     <string name="number">رقم</string>
+    <string name="delete">حذف</string>
+    <string name="refresh">تحديث</string>
 
     <string name="options_title">الشعبة</string>
     <string name="options_notice">المرجو اختيار الشعبة من خلال القائمة اسفله</string>

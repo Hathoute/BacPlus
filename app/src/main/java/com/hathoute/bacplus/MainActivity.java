@@ -3,10 +3,12 @@ package com.hathoute.bacplus;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -31,6 +33,12 @@ public class MainActivity extends AppCompatActivity implements YearFragment.OnCa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
+            if (getWindow().getDecorView().getLayoutDirection() == View.LAYOUT_DIRECTION_LTR){
+                getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+            }
+
         startService(new Intent(getBaseContext(), OnAppDestroyedService.class));
         new BacDataDBHelper(this).readifyDB();
         Intent intent = new Intent(this, OfflineDocsActivity.class);
@@ -73,6 +81,16 @@ public class MainActivity extends AppCompatActivity implements YearFragment.OnCa
         startActivity(intent);
     }
 
+    public void setBackButton(boolean bSet) {
+        getSupportActionBar().setDisplayShowHomeEnabled(bSet);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(bSet);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        showYears();
+        return true;
+    }
 
     //Todo: Find a better way to compare database files.
     /*public static void checkDatabase(Context context) {

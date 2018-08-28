@@ -37,11 +37,19 @@ public class SubjectsActivity extends AppCompatActivity {
 
         try {
             getSupportActionBar().setTitle(R.string.list_of_subjects);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
         } catch (NullPointerException ignored) {
             ignored.printStackTrace();
         }
 
         setupGridView();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
     public void setupGridView() {

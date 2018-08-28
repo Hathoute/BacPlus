@@ -34,6 +34,7 @@ public class OptionFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        ((MainActivity)getActivity()).setBackButton(true);
         return inflater.inflate(R.layout.fragment_option, container, false);
     }
 

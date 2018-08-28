@@ -10,22 +10,18 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class LastSeenFragment extends Fragment {
+public class AvailableDocsFragment extends Fragment {
     Context mContext;
-    RecyclerView rvLastSeen;
+    RecyclerView rvAvailable;
+    int iSubject;
     List<Object> objectList;
+    List<Object> sectionObjectList;
     RVItemsAdapter mAdapter;
 
     @Override
@@ -39,60 +35,44 @@ public class LastSeenFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_lastseen, container, false);
 
-        ((OfflineDocsActivity)getActivity()).setActionBarTitle(R.string.nav_last_seen);
+        iSubject = getArguments().getInt("subject");
+        if(iSubject == -1)
+            ((OfflineDocsActivity)getActivity()).setActionBarTitle(R.string.nav_all_files);
+        else
+            ((OfflineDocsActivity)getActivity()).setActionBarTitle(
+                    mContext.getResources().getStringArray(R.array.subjects)[iSubject]);
 
-        rvLastSeen = view.findViewById(R.id.rvLastSeen);
+        rvAvailable = view.findViewById(R.id.rvLastSeen);
         setupRecyclerView();
         prepareObjects();
-
-        setHasOptionsMenu(true);
+        sectionObjects();
 
         return view;
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.actbar_items, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()) {
-            case R.id.mDelete:
-                DialogHelper dialogHelper = new DialogHelper(mContext,
-                        R.string.delete_history, new DialogHelper.OnChoiceListener() {
-                    @Override
-                    public void onChoice(boolean accepted) {
-                        if(!accepted)
-                            return;
-
-                        new OfflineDBHelper(mContext).clear(OfflineDBHelper.LAST);
-                        clearObjects();
-                    }
-                });
-                dialogHelper.show();
-                return true;
-
-            case R.id.mRefresh:
-                prepareObjects();
-                return true;
-        }
-        return false;
-    }
-
     private void setupRecyclerView() {
-        rvLastSeen.setHasFixedSize(true);
+        rvAvailable.setHasFixedSize(true);
         objectList = new ArrayList<>();
-        mAdapter = new RVItemsAdapter(objectList);
+        sectionObjectList = new ArrayList<>();
+        mAdapter = new RVItemsAdapter(sectionObjectList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext);
-        rvLastSeen.setLayoutManager(mLayoutManager);
-        rvLastSeen.setItemAnimator(new DefaultItemAnimator());
-        rvLastSeen.setAdapter(mAdapter);
+        rvAvailable.setLayoutManager(mLayoutManager);
+        rvAvailable.setItemAnimator(new DefaultItemAnimator());
+        rvAvailable.setAdapter(mAdapter);
+        rvAvailable.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     private void prepareObjects() {
-        objectList.clear();
-        Cursor cursor = new OfflineDBHelper(mContext).getLastSeen();
+        Cursor cursor;
+        if(iSubject == -1)
+            cursor = new OfflineDBHelper(mContext).getAvailable();
+        else
+            cursor = new OfflineDBHelper(mContext).getAvailable(iSubject);
         if(cursor.moveToFirst()) {
             do {
                 int Type = cursor.getInt(1);
@@ -108,14 +88,22 @@ public class LastSeenFragment extends Fragment {
                 objectList.add(object);
                 System.out.println(((Lesson)object).getName());
             } while (cursor.moveToNext());
-            mAdapter.notifyDataSetChanged();
         }
     }
 
-    private void clearObjects() {
-        int size = objectList.size();
-        objectList.clear();
-        mAdapter.notifyItemRangeRemoved(0, size);
+    private void sectionObjects() {
+        int lastId = iSubject;
+        for(Object object : objectList) {
+            if(object instanceof Lesson) {
+                int subId = ((Lesson) object).getSubject();
+                if(subId != lastId) {
+                    sectionObjectList.add(subId);
+                    lastId = subId;
+                }
+                sectionObjectList.add(object);
+            }
+        }
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override

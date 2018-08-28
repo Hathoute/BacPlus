@@ -112,17 +112,33 @@ public class OfflineDocsActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         Fragment fragment;
-        switch(item.getItemId()) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Bundle bundle;
+        int itemId = item.getItemId();
+        switch(itemId) {
             case R.id.nav_lastseen:
                 fragment = new LastSeenFragment();
-                FragmentManager fragmentManager = getSupportFragmentManager();
                 fragmentManager.beginTransaction()
                         .replace(R.id.content_frame, fragment, "LAST")
                         .commit();
                 break;
             case R.id.nav_allfiles:
+                fragment = new AvailableDocsFragment();
+                bundle = new Bundle();
+                bundle.putInt("subject", -1);
+                fragment.setArguments(bundle);
+                fragmentManager.beginTransaction()
+                        .replace(R.id.content_frame, fragment, "ALL")
+                        .commit();
                 break;
             default:
+                fragment = new AvailableDocsFragment();
+                bundle = new Bundle();
+                bundle.putInt("subject", itemId);
+                fragment.setArguments(bundle);
+                fragmentManager.beginTransaction()
+                        .replace(R.id.content_frame, fragment, "ALL")
+                        .commit();
                 break;
         }
         return true;
@@ -185,7 +201,7 @@ public class OfflineDocsActivity extends AppCompatActivity
 
     private List<Integer> formatSubjects() {
         List<Integer> idList = new ArrayList<>();
-        Cursor cursor = new OfflineDBHelper(this).get(OfflineDBHelper.AVAILABLE);
+        Cursor cursor = new OfflineDBHelper(this).getAvailable();
         if(cursor.moveToFirst()) {
             do {
                 Integer id = cursor.getInt(2);
@@ -195,5 +211,13 @@ public class OfflineDocsActivity extends AppCompatActivity
         }
         Collections.sort(idList);
         return idList;
+    }
+
+    public void setActionBarTitle(String title) {
+        getSupportActionBar().setTitle(title);
+    }
+
+    public void setActionBarTitle(int resId) {
+        getSupportActionBar().setTitle(resId);
     }
 }

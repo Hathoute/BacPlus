@@ -114,22 +114,33 @@ public class OfflineDBHelper {
         db.delete(getTable(Table), null, null);
     }
 
-    public Cursor get(int Table) {
+    public Cursor getLastSeen() {
         SQLiteDatabase db = _openHelper.getReadableDatabase();
         if (db == null) {
             return null;
         }
-        String sqlQuery = "select * from " + getTable(Table)  + " order by id";
+        String sqlQuery = "select * from " + TABLE_LAST  +
+                " order by _id asc";
         return db.rawQuery(sqlQuery, new String[] {});
     }
 
-    public Cursor get(int Table, int Subject) {
+    public Cursor getAvailable() {
         SQLiteDatabase db = _openHelper.getReadableDatabase();
         if (db == null) {
             return null;
         }
-        String sqlQuery = "select * from " + getTable(Table)  + " where " +
-                COLUMN_SUBJECT + " =? order by id";
+        String sqlQuery = "select * from " + TABLE_AVAILABLE  +
+                " order by " + COLUMN_SUBJECT + " desc, " + COLUMN_TYPE + " desc";
+        return db.rawQuery(sqlQuery, new String[] {});
+    }
+
+    public Cursor getAvailable(int Subject) {
+        SQLiteDatabase db = _openHelper.getReadableDatabase();
+        if (db == null) {
+            return null;
+        }
+        String sqlQuery = "select * from " + TABLE_AVAILABLE  + " where " + COLUMN_SUBJECT + "=? "
+               + "order by " + COLUMN_TYPE + " desc";
         return db.rawQuery(sqlQuery, new String[] {String.valueOf(Subject)});
     }
 

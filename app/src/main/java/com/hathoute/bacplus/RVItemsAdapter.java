@@ -18,35 +18,31 @@ public class RVItemsAdapter extends RecyclerView.Adapter<RVItemsAdapter.MyViewHo
 
     private List<Object> objectList;
     private RecyclerView mRecyclerView;
-
+    private static final int VIEW_SECTION = 1;
 
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView tvName, tvYear;
+        public TextView tvName, tvYear, tvSection;
         public ImageButton ibOpen, ibDownload, ibDelete;
 
         public MyViewHolder(View view) {
             super(view);
-            tvName = view.findViewById(R.id.tvName);
-            tvYear = view.findViewById(R.id.tvYear);
-            ibOpen = view.findViewById(R.id.ibOpen);
-            ibDownload = view.findViewById(R.id.ibDownload);
-            ibDelete = view.findViewById(R.id.ibDelete);
+            if(view.getTag().equals(VIEW_SECTION))
+                tvSection = view.findViewById(R.id.tvSection);
+            else {
+                tvName = view.findViewById(R.id.tvName);
+                tvYear = view.findViewById(R.id.tvYear);
+                ibOpen = view.findViewById(R.id.ibOpen);
+                ibDownload = view.findViewById(R.id.ibDownload);
+                ibDelete = view.findViewById(R.id.ibDelete);
+            }
         }
     }
 
 
     public RVItemsAdapter(List<Object> objectList) {
         this.objectList = objectList;
-    }
-
-    @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.row_item_1, parent, false);
-
-        return new MyViewHolder(itemView);
     }
 
     @Override
@@ -57,41 +53,72 @@ public class RVItemsAdapter extends RecyclerView.Adapter<RVItemsAdapter.MyViewHo
     }
 
     @Override
+    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View itemView;
+        if(viewType == VIEW_SECTION)
+            itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.row_section_main, parent, false);
+        else
+            itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.row_item_1, parent, false);
+
+        itemView.setTag(viewType);
+        return new MyViewHolder(itemView);
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if(objectList.get(position) instanceof Integer)
+            return VIEW_SECTION;
+        else
+            return 0;
+    }
+
+    @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Object object = objectList.get(position);
-        if(object instanceof Lesson) {
-            holder.tvName.setText(((Lesson) object).getName());
-            holder.tvYear.setText(AppHelper.getYearResbyId(((Lesson) object).getYear()));
-        } else if(object instanceof Exam) {
-            holder.tvName.setText(((Exam) object).formatName());
-            holder.tvYear.setText(AppHelper.getYearResbyId(((Exam) object).getYear()));
+        if(getItemViewType(position) == VIEW_SECTION) {
+            if(object instanceof Integer) {
+                holder.tvSection.setText(App.getContext().getResources()
+                        .getStringArray(R.array.subjects)[(Integer) object]);
+            }
         }
+        else {
+            if (object instanceof Lesson) {
+                holder.tvName.setText(((Lesson) object).getName());
+                holder.tvYear.setText(AppHelper.getYearResbyId(((Lesson) object).getYear()));
+            } else if (object instanceof Exam) {
+                holder.tvName.setText(((Exam) object).formatName());
+                holder.tvYear.setText(AppHelper.getYearResbyId(((Exam) object).getYear()));
+            }
 
-        holder.ibOpen.setTag(position);
-        holder.ibOpen.setOnClickListener(this);
-        holder.ibDownload.setTag(position);
-        holder.ibDownload.setOnClickListener(this);
-        holder.ibDelete.setTag(position);
-        holder.ibDelete.setOnClickListener(this);
-        ((View)holder.tvName.getParent()).setOnClickListener(this);
+            holder.ibOpen.setTag(position);
+            holder.ibOpen.setOnClickListener(this);
+            holder.ibDownload.setTag(position);
+            holder.ibDownload.setOnClickListener(this);
+            holder.ibDelete.setTag(position);
+            holder.ibDelete.setOnClickListener(this);
+            ((View) holder.tvName.getParent()).setOnClickListener(this);
 
-        int isAvailable;
-        if(object instanceof Lesson)
-            isAvailable = ((Lesson) object).isAvailable(App.getContext());
-        else
-            isAvailable = ((Exam) object).isAvailable(App.getContext());
+            int isAvailable;
+            if (object instanceof Lesson)
+                isAvailable = ((Lesson) object).isAvailable(App.getContext());
+            else
+                isAvailable = ((Exam) object).isAvailable(App.getContext());
 
-        switch (isAvailable) {
-            case AppHelper.Storage.None: case AppHelper.Storage.Cache:
-                //((LinearLayout) holder.ibDelete.getParent().getParent()).removeView((View) holder.ibDelete.getParent());
-                ((View) holder.ibDelete.getParent()).setVisibility(View.GONE);
-                ((View) holder.ibDownload.getParent()).setVisibility(View.VISIBLE);
-                break;
-            case AppHelper.Storage.Data:
-                //((LinearLayout) holder.ibDownload.getParent().getParent()).removeView((View) holder.ibDownload.getParent());
-                ((View) holder.ibDownload.getParent()).setVisibility(View.GONE);
-                ((View) holder.ibDelete.getParent()).setVisibility(View.VISIBLE);
-                break;
+            switch (isAvailable) {
+                case AppHelper.Storage.None:
+                case AppHelper.Storage.Cache:
+                    //((LinearLayout) holder.ibDelete.getParent().getParent()).removeView((View) holder.ibDelete.getParent());
+                    ((View) holder.ibDelete.getParent()).setVisibility(View.GONE);
+                    ((View) holder.ibDownload.getParent()).setVisibility(View.VISIBLE);
+                    break;
+                case AppHelper.Storage.Data:
+                    //((LinearLayout) holder.ibDownload.getParent().getParent()).removeView((View) holder.ibDownload.getParent());
+                    ((View) holder.ibDownload.getParent()).setVisibility(View.GONE);
+                    ((View) holder.ibDelete.getParent()).setVisibility(View.VISIBLE);
+                    break;
+            }
         }
     }
 

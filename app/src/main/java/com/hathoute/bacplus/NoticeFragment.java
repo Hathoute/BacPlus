@@ -29,6 +29,10 @@ public class NoticeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_offline_notice, container, false);
+
+        //Todo: Add Title
+        ((OfflineDocsActivity)getActivity()).setActionBarTitle("ADD TITLE");
+
         int iAvailable = getArguments().getInt("available");
         tvNotice = view.findViewById(R.id.tvNotice);
         tvLoaded = view.findViewById(R.id.tvLoaded);
