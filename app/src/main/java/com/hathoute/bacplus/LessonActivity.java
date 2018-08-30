@@ -41,7 +41,8 @@ public class LessonActivity extends SlidingActivity {
     public void setupViews() {
         TextView tvLesson = findViewById(R.id.tvExam);
         TextView tvSubject = findViewById(R.id.tvSubject);
-        TextView tvYear = findViewById(R.id.tvOptions);
+        TextView tvYear = findViewById(R.id.tvYear);
+        TextView tvOptions = findViewById(R.id.tvOptions);
 
         tvLesson.setText(Html.fromHtml(resources.getString(R.string.lesson_name)
                 .replace("$", "<b>" + lesson.getName() + "</b>")));
@@ -52,6 +53,10 @@ public class LessonActivity extends SlidingActivity {
                 .replace("$", "<b>" + resources.getString
                         (lesson.getYear() == MainActivity.YEAR_FIRST ?
                                 R.string.years_first : R.string.years_second) + "</b>")));
+
+        String optionsStr = AppHelper.formatOptions(lesson.getYear(), lesson.getOptions());
+        tvOptions.setText(Html.fromHtml(resources.getString(R.string.string_option)
+                .replace("$", "<b>" + optionsStr + "</b>")));
     }
 
     public void setupListeners() {

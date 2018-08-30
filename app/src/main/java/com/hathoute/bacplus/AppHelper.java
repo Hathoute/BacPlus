@@ -1,5 +1,6 @@
 package com.hathoute.bacplus;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -16,6 +17,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class AppHelper {
 
@@ -62,6 +66,53 @@ public class AppHelper {
             }
         }
         return index;
+    }
+
+    public static int getOptionIdbyAbv(Context context, int Year, String option) {
+        String[] options = context.getResources()
+                .getStringArray(Year == MainActivity.YEAR_FIRST ? R.array.options_firstyear_helper :
+                        R.array.options_secondyear_helper);
+        int index = -1;
+        for (int i = 0; i < options.length; i++) {
+            if(options[i].equals(option)) {
+                index = i;
+                break;
+            }
+        }
+        return index;
+    }
+
+    public static List<Integer> getOptionIdsbyAbvs(Context context, int Year, String options) {
+        String[] optionsabv = context.getResources()
+                .getStringArray(Year == MainActivity.YEAR_FIRST ? R.array.options_firstyear_helper :
+                        R.array.options_secondyear_helper);
+
+        List<String> tokenslist = Arrays.asList(options.split(";"));
+        List<Integer> idsList = new ArrayList<>();
+
+        for(int i = 0; i < optionsabv.length; i++) {
+            if(tokenslist.contains(optionsabv[i]))
+                idsList.add(i);
+        }
+        return idsList;
+    }
+
+    public static String formatOptions(int Year, String options) {
+        List<Integer> idsList = getOptionIdsbyAbvs(App.getContext(), Year, options);
+        String[] optionsName = App.getContext().getResources()
+                .getStringArray(Year == MainActivity.YEAR_FIRST ? R.array.options_firstyear_array :
+                        R.array.options_secondyear_array);
+
+        StringBuilder strBuilder = new StringBuilder("");
+        for(int i = 0; i < idsList.size(); i++) {
+            if(i == 0) {
+                strBuilder.append(optionsName[idsList.get(0)]);
+                continue;
+            }
+            strBuilder.append(" - ");
+            strBuilder.append(optionsName[idsList.get(i)]);
+        }
+        return strBuilder.toString();
     }
 
     public static String getYearStrbyId(int Year) {

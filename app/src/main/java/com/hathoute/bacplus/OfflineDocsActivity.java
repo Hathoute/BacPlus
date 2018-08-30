@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -87,7 +88,8 @@ public class OfflineDocsActivity extends AppCompatActivity
         String[] subjectNames = getResources().getStringArray(R.array.subjects);
         for(Integer id : idList) {
             //Todo: Design Icons.
-            submenu.add(0, id, 1, subjectNames[id]);
+            submenu.add(0, id, 1, subjectNames[id]).setCheckable(true)
+                    .setChecked(false).setIcon(R.drawable.ic_downloads);
         }
     }
 
@@ -141,7 +143,17 @@ public class OfflineDocsActivity extends AppCompatActivity
                         .commit();
                 break;
         }
+
+        dlOffline.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(dlOffline.isDrawerOpen(GravityCompat.START))
+            dlOffline.closeDrawer(GravityCompat.START);
+        else
+            super.onBackPressed();
     }
 
     private void scanOffline(File rootFolder) {

@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -41,13 +42,16 @@ public class MainActivity extends AppCompatActivity implements YearFragment.OnCa
 
         startService(new Intent(getBaseContext(), OnAppDestroyedService.class));
         new BacDataDBHelper(this).readifyDB();
-        Intent intent = new Intent(this, OfflineDocsActivity.class);
-        startActivity(intent);
+
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         //AppHelper.cleanAll(this);
         showYears();
     }
 
     public void showYears() {
+        getSupportActionBar().setTitle(R.string.years_title);
         Fragment fragment = new YearFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
@@ -62,14 +66,12 @@ public class MainActivity extends AppCompatActivity implements YearFragment.OnCa
     }
 
     public void showOptions() {
+        getSupportActionBar().setTitle(R.string.options_title);
         Fragment fragment = new OptionFragment();
         Bundle bundle = new Bundle();
         bundle.putInt("year", iChosenYear);
         fragment.setArguments(bundle);
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.content_frame, fragment, "OPTION")
-                .commit();
+        replaceFragmentWithAnimation(fragment, "OPTION");
     }
 
     @Override
@@ -81,15 +83,19 @@ public class MainActivity extends AppCompatActivity implements YearFragment.OnCa
         startActivity(intent);
     }
 
-    public void setBackButton(boolean bSet) {
-        getSupportActionBar().setDisplayShowHomeEnabled(bSet);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(bSet);
-    }
-
     @Override
     public boolean onSupportNavigateUp() {
-        showYears();
+        onBackPressed();
         return true;
+    }
+
+    public void replaceFragmentWithAnimation(android.support.v4.app.Fragment fragment, String tag){
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.setCustomAnimations(R.anim.enter_from_left,
+                R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left);
+        transaction.replace(R.id.content_frame, fragment);
+        transaction.addToBackStack(tag);
+        transaction.commit();
     }
 
     //Todo: Find a better way to compare database files.

@@ -1,8 +1,8 @@
 <resources>
-    <string name="app_name">Bac Plus</string>
+    <string name="app_name">Bac Maroc</string>
 
     <string name="years_title">السنة الدراسية</string>
-    <string name="years_notice">المرجو اختيار السنة الدراسية التي تتواجدون بها حاليا</string>
+    <string name="years_notice">المرجو اختيار السنة الدراسية التي تتواجدون بها حاليا او التي تريدون الاضطلاع عليها</string>
     <string name="years_first">اولى باكالوريا</string>
     <string name="years_second">ثانية باكالوريا</string>
     <string name="file_open">مشاهدة</string>
@@ -23,6 +23,13 @@
     <string name="number">رقم</string>
     <string name="delete">حذف</string>
     <string name="refresh">تحديث</string>
+
+    <string name="message_welcome">مرحبا بكم في باك+</string>
+    <string name="message_main">يمكنكم البدء بمشاهدة و تحميل الدروس، أو تصفح الملفات التي قمتم بتحميلها.</string>
+    <string name="choice_online">حمل الدروس الان</string>
+    <string name="choice_offline">تصفح الملفات</string>
+
+    <string name="appbartitle_main">الرئيسية</string>
 
     <string name="options_title">الشعبة</string>
     <string name="options_notice">المرجو اختيار الشعبة من خلال القائمة اسفله</string>
@@ -102,15 +109,14 @@
     <string name="lesson_id">الدرس $ :</string>
 
     <string name="iv_contentdesc">Display Youtube thumbnail</string>
-    
-    //DrawerLayout Strings.
+
     <string name="nav_last_seen">اخر المشاهدات</string>
     <string name="nav_all_files">جميع الملفات</string>
     <string name="nav_subjects">المواد</string>
 
     <string name="string_year">السنة : $</string>
     <string name="string_subject">المادة : $</string>
-    <string name="string_option">الشعبة : $</string>
+    <string name="string_option">الشعب : $</string>
 
     <string name="offline_notice">هنا ستجدون جميع الملفات التي قمتم بتحميلها من خلال التطبيق.
 

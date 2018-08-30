@@ -62,11 +62,9 @@ public class ExamActivity extends SlidingActivity {
                         (exam.getYear() == MainActivity.YEAR_FIRST ?
                                 R.string.years_first : R.string.years_second) + "</b>")));
 
+        String optionsStr = AppHelper.formatOptions(exam.getYear(), exam.getOptions());
         tvOptions.setText(Html.fromHtml(resources.getString(R.string.string_option)
-                .replace("$", "<b>" +
-                        resources.getStringArray(exam.getYear() == MainActivity.YEAR_FIRST ?
-                                R.array.options_firstyear_array :
-                                R.array.options_secondyear_array)[exam.getSubject()] + "</b>")));
+                .replace("$", "<b>" + optionsStr + "</b>")));
     }
 
     public void setupListeners() {
@@ -80,11 +78,17 @@ public class ExamActivity extends SlidingActivity {
         });
 
         final LinearLayout downloadFile = findViewById(R.id.downloadFile);
+
         if(exam.isAvailable(ExamActivity.this) == AppHelper.Storage.Data) {
             ((LinearLayout) downloadFile.getParent()).removeView(downloadFile);
         }
         else {
-            exam.download(ExamActivity.this, false);
+            downloadFile.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    exam.download(ExamActivity.this, false);
+                }
+            });
         }
 
         final LinearLayout deleteFile = findViewById(R.id.deleteFile);

@@ -120,7 +120,7 @@ public class OfflineDBHelper {
             return null;
         }
         String sqlQuery = "select * from " + TABLE_LAST  +
-                " order by _id asc";
+                " order by _id desc";
         return db.rawQuery(sqlQuery, new String[] {});
     }
 
@@ -130,7 +130,7 @@ public class OfflineDBHelper {
             return null;
         }
         String sqlQuery = "select * from " + TABLE_AVAILABLE  +
-                " order by " + COLUMN_SUBJECT + " desc, " + COLUMN_TYPE + " desc";
+                " order by " + COLUMN_SUBJECT + " asc, " + COLUMN_TYPE + " desc";
         return db.rawQuery(sqlQuery, new String[] {});
     }
 
