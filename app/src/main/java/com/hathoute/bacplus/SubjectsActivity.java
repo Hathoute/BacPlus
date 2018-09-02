@@ -54,7 +54,7 @@ public class SubjectsActivity extends AppCompatActivity {
 
     public void setupGridView() {
         List<Subject> list = lessonsHelper.formatSubjects(iChosenYear, iChosenOption);
-        CustomGridAdapter gridAdapter = new CustomGridAdapter(SubjectsActivity.this, list);
+        final CustomGridAdapter gridAdapter = new CustomGridAdapter(SubjectsActivity.this, list);
         gvSubjects.setAdapter(gridAdapter);
         gvSubjects.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -63,7 +63,7 @@ public class SubjectsActivity extends AppCompatActivity {
                         (SubjectsActivity.this, TabbedSubjectActivity.class);
                 intent.putExtra("year", iChosenYear)
                         .putExtra("option", iChosenOption)
-                        .putExtra("subject", position);
+                        .putExtra("subject", (int) gridAdapter.getItemId(position));
                 startActivity(intent);
             }
         });

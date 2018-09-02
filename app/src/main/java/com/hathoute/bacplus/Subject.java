@@ -10,19 +10,23 @@ import java.util.List;
 public class Subject {
     public static int MATH = 0;
     public static int ARABIC = 1;
-    public static int PHYSICS = 2;
-    public static int SVT = 3;
-    public static int FRENCH = 4;
-    public static int ENGLISH = 5;
-    public static int PHILOSOPHY = 6;
-    public static int ISLAMIC = 7;
-    public static int GEOGRAPHY = 8;
-    public static int ENGINEERING = 9;
+    public static int COMPTA = 2;
+    public static int ECONOMY = 3;
+    public static int PHYSICS = 4;
+    public static int SVT = 5;
+    public static int FRENCH = 6;
+    public static int ENGLISH = 7;
+    public static int PHILOSOPHY = 8;
+    public static int ISLAMIC = 9;
+    public static int GEOGRAPHY = 10;
+    public static int ENGINEERING = 11;
 
     // Conserving the same order as in strings.xml
     private Integer[] subjectsIcons = {
             R.drawable.icon_math,
             R.drawable.icon_arabic,
+            R.drawable.icon_compta,
+            R.drawable.icon_economy,
             R.drawable.icon_pc,
             R.drawable.icon_svt,
             R.drawable.icon_french,

@@ -62,6 +62,8 @@
     <string-array name="subjects">
         <item>الرياضيات</item>
         <item>اللغة العربية</item>
+        <item>المحاسبة والرياضيات المالية</item>
+        <item>الاقتصاد والتنظيم الإداري للمقاولات</item>
         <item>الفيزياء و الكيمياء</item>
         <item>علوم الحياة و الارض</item>
         <item>اللغة الفرنسية</item>
@@ -75,6 +77,8 @@
     <string-array name="subjects_abv">
         <item>math</item>
         <item>arabic</item>
+        <item>compta</item>
+        <item>economy</item>
         <item>physics</item>
         <item>svt</item>
         <item>french</item>
@@ -88,6 +92,8 @@
     <string-array name="subjects_helper">
         <item>2nd;all</item>
         <item>1st;all</item>
+        <item>2nd;+sceco</item>
+        <item>2nd;+sceco</item>
         <item>2nd;all;-sceco</item>
         <item>2nd;all;-scmb;-sceco</item>
         <item>1st;all</item>

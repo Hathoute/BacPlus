@@ -31,12 +31,12 @@ public class CustomGridAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        return position;
+        return lSubjects.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return position;
+        return ((Subject)getItem(position)).getSubject();
     }
 
     @Override
