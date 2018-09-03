@@ -86,7 +86,6 @@ public class AvailableDocsFragment extends Fragment {
                     object = new BacDataDBHelper(mContext).getExam(Subject, Id);
                 }
                 objectList.add(object);
-                System.out.println(((Lesson)object).getName());
             } while (cursor.moveToNext());
         }
     }
