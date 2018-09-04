@@ -18,7 +18,8 @@ public class RVItemsAdapter extends RecyclerView.Adapter<RVItemsAdapter.MyViewHo
 
     private List<Object> objectList;
     private RecyclerView mRecyclerView;
-    private static final int VIEW_SECTION = 1;
+    private static final int VIEW_SECTION_MAIN = 1;
+    private static final int VIEW_SECTION_SIGMA = 2;
 
 
 
@@ -28,7 +29,7 @@ public class RVItemsAdapter extends RecyclerView.Adapter<RVItemsAdapter.MyViewHo
 
         public MyViewHolder(View view) {
             super(view);
-            if(view.getTag().equals(VIEW_SECTION))
+            if(view.getTag().equals(VIEW_SECTION_MAIN) || view.getTag().equals(VIEW_SECTION_SIGMA))
                 tvSection = view.findViewById(R.id.tvSection);
             else {
                 tvName = view.findViewById(R.id.tvName);
@@ -55,9 +56,12 @@ public class RVItemsAdapter extends RecyclerView.Adapter<RVItemsAdapter.MyViewHo
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView;
-        if(viewType == VIEW_SECTION)
+        if(viewType == VIEW_SECTION_MAIN)
             itemView = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.row_section_main, parent, false);
+        else if(viewType == VIEW_SECTION_SIGMA)
+            itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.row_section_sigma, parent, false);
         else
             itemView = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.row_item_1, parent, false);
@@ -68,8 +72,12 @@ public class RVItemsAdapter extends RecyclerView.Adapter<RVItemsAdapter.MyViewHo
 
     @Override
     public int getItemViewType(int position) {
-        if(objectList.get(position) instanceof Integer)
-            return VIEW_SECTION;
+        if(objectList.get(position) instanceof Integer) {
+            if((Integer)objectList.get(position) < 0)
+                return VIEW_SECTION_SIGMA;
+            else
+                return VIEW_SECTION_MAIN;
+        }
         else
             return 0;
     }
@@ -77,10 +85,17 @@ public class RVItemsAdapter extends RecyclerView.Adapter<RVItemsAdapter.MyViewHo
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Object object = objectList.get(position);
-        if(getItemViewType(position) == VIEW_SECTION) {
+        if(getItemViewType(position) == VIEW_SECTION_MAIN
+                || getItemViewType(position) == VIEW_SECTION_SIGMA) {
             if(object instanceof Integer) {
-                holder.tvSection.setText(App.getContext().getResources()
-                        .getStringArray(R.array.subjects)[(Integer) object]);
+                if((Integer)object < 0) {
+                    int arrayID = (Integer) object * -1 - 1;
+                    holder.tvSection.setText(App.getContext().getResources()
+                            .getStringArray(R.array.subject_tabs)[arrayID]);
+                }
+                else
+                    holder.tvSection.setText(App.getContext().getResources()
+                            .getStringArray(R.array.subjects)[(Integer) object]);
             }
         }
         else {

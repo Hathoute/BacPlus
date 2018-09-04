@@ -55,6 +55,10 @@ public class Exam {
         return this.Subject;
     }
 
+    public int getRegionId() {
+        return cv.getAsInteger(BacDataDBHelper.Columns.Region);
+    }
+
     public String getDirectoryPath(Context context) {
         return "bacplus/" + context.getResources().getStringArray(R.array.subjects_abv)[Subject] +
                 "/exams";

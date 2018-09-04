@@ -43,6 +43,7 @@ public class ExamActivity extends SlidingActivity {
         TextView tvSubject = findViewById(R.id.tvSubject);
         TextView tvOptions = findViewById(R.id.tvOptions);
         TextView tvYear = findViewById(R.id.tvYear);
+        TextView tvRegion = findViewById(R.id.tvRegion);
 
         if(exam.getType() != Exam.Types.CLASS)
             tvExam.setText(Html.fromHtml(resources.getString(R.string.exam_session)
@@ -65,6 +66,16 @@ public class ExamActivity extends SlidingActivity {
         String optionsStr = AppHelper.formatOptions(exam.getYear(), exam.getOptions());
         tvOptions.setText(Html.fromHtml(resources.getString(R.string.string_option)
                 .replace("$", "<b>" + optionsStr + "</b>")));
+
+        int iRegion = exam.getRegionId();
+        if(iRegion == -1) {
+            tvRegion.setVisibility(View.GONE);
+        }
+        else {
+            String mRegion = getResources().getStringArray(R.array.regions_names)[iRegion];
+            tvRegion.setText(Html.fromHtml(getResources().getString(R.string.string_region)
+                    .replace("$", "<b>" + mRegion + "</b>")));
+        }
     }
 
     public void setupListeners() {

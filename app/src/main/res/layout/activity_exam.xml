@@ -18,9 +18,20 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/tvSubject"
+        android:id="@+id/tvRegion"
         android:textSize="18sp"
         android:layout_below="@id/tvExam"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:text="الجهة : ..."/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvSubject"
+        android:textSize="18sp"
+        android:layout_below="@id/tvRegion"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
         android:layout_marginRight="10dp"

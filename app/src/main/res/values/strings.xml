@@ -64,6 +64,7 @@
         <item>اللغة العربية</item>
         <item>المحاسبة والرياضيات المالية</item>
         <item>الاقتصاد والتنظيم الإداري للمقاولات</item>
+        <item>الاقتصاد العام و الاحصاء</item>
         <item>الفيزياء و الكيمياء</item>
         <item>علوم الحياة و الارض</item>
         <item>اللغة الفرنسية</item>
@@ -79,6 +80,7 @@
         <item>arabic</item>
         <item>compta</item>
         <item>economy</item>
+        <item>ecogen</item>
         <item>physics</item>
         <item>svt</item>
         <item>french</item>
@@ -92,6 +94,7 @@
     <string-array name="subjects_helper">
         <item>2nd;all</item>
         <item>1st;all</item>
+        <item>2nd;+sceco</item>
         <item>2nd;+sceco</item>
         <item>2nd;+sceco</item>
         <item>2nd;all;-sceco</item>
@@ -113,6 +116,7 @@
     </string-array>
 
     <string name="lesson_id">الدرس $ :</string>
+    <string name="lesson_name">الدرس : $</string>
 
     <string name="iv_contentdesc">Display Youtube thumbnail</string>
 
@@ -123,6 +127,24 @@
     <string name="string_year">السنة : $</string>
     <string name="string_subject">المادة : $</string>
     <string name="string_option">الشعب : $</string>
+    <string name="string_region">الجهة : $</string>
+
+    <string-array name="exam_types">
+        <item>الامتحان الوطني</item>
+        <item>الامتحان الجهوي</item>
+        <item>فرض محروس/منزلي</item>
+    </string-array>
+
+    <string-array name="exam_sessions">
+        <item>عادية</item>
+        <item>إستدراكية</item>
+    </string-array>
+
+    <string name="exam_surveille">الامتحان رقم : $</string>
+    <string name="exam_session">دورة : $</string>
+    <string name="exam_region">جهة : $</string>
+
+    <string name="video_author">من طرف $</string>
 
     <string name="offline_notice">هنا ستجدون جميع الملفات التي قمتم بتحميلها من خلال التطبيق.
 

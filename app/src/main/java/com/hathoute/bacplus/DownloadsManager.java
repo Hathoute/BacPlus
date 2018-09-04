@@ -148,8 +148,8 @@ public class DownloadsManager extends AsyncTask<Void, Integer, String> {
         super.onProgressUpdate(progress);
         // if we get here, length is known, now set indeterminate to false
         viewHolder.tvNotice.setText(context.getResources().getString(R.string.download_size)
-                .replace("$", String.valueOf(progress[0]))
-                .replace("£", String.valueOf(progress[1])));
+                .replace("$", AppHelper.getAppropriateSize(progress[0]))
+                .replace("£", AppHelper.getAppropriateSize(progress[1])));
         viewHolder.pbLoading.setIndeterminate(false);
         viewHolder.pbLoading.setMax(100);
         viewHolder.pbLoading.setProgress((progress[0] * 100 / progress[1]));

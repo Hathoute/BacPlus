@@ -89,12 +89,14 @@ public class VideosFragment extends Fragment {
             while(curRow < lastRow+10) {
                 try {
                     Video video = videos.get(curRow);
-                    if(!video.generateData())
-                        continue;
-
+                    video.generateData();
                     publishProgress(video);
-                } catch (Exception e) {
+                } catch (IndexOutOfBoundsException ignored) {
                     return true;
+                } catch (Exception ignored) {
+                    videos.remove(curRow);
+                    lastRow--;
+                    continue;
                 }
                 curRow++;
             }

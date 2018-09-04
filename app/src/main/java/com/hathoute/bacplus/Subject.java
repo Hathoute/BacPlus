@@ -12,14 +12,15 @@ public class Subject {
     public static int ARABIC = 1;
     public static int COMPTA = 2;
     public static int ECONOMY = 3;
-    public static int PHYSICS = 4;
-    public static int SVT = 5;
-    public static int FRENCH = 6;
-    public static int ENGLISH = 7;
-    public static int PHILOSOPHY = 8;
-    public static int ISLAMIC = 9;
-    public static int GEOGRAPHY = 10;
-    public static int ENGINEERING = 11;
+    public static int ECOGEN = 4;
+    public static int PHYSICS = 5;
+    public static int SVT = 6;
+    public static int FRENCH = 7;
+    public static int ENGLISH = 8;
+    public static int PHILOSOPHY = 9;
+    public static int ISLAMIC = 10;
+    public static int GEOGRAPHY = 11;
+    public static int ENGINEERING = 12;
 
     // Conserving the same order as in strings.xml
     private Integer[] subjectsIcons = {
@@ -27,6 +28,7 @@ public class Subject {
             R.drawable.icon_arabic,
             R.drawable.icon_compta,
             R.drawable.icon_economy,
+            R.drawable.icon_ecogen,
             R.drawable.icon_pc,
             R.drawable.icon_svt,
             R.drawable.icon_french,
@@ -87,22 +89,13 @@ public class Subject {
 
     public List<Video> getVideos() {
         List<Video> videos = new ArrayList<>();
+        Cursor rows = new BacDataDBHelper(mContext).getVideos(Subject, Year, Option);
 
-        String videoName = "videos_" + getYearStr() + "_" + SubjectAbv;
-        String[] videoTokens = mContext.getResources()
-                .getStringArray(mContext.getResources()
-                        .getIdentifier(videoName + "_tokens", "array",
-                                mContext.getPackageName()));
-
-        for(int i = videoTokens.length - 1; i >= 0; i--) {
-            List<String> tokens = Arrays.asList(videoTokens[i].split(";"));
-            if(!tokens.contains(mContext.getResources()
-                    .getStringArray(Year == MainActivity.YEAR_FIRST ?
-                            R.array.options_firstyear_helper :
-                            R.array.options_secondyear_helper)[Option]))
-                continue;
-
-            videos.add(new Video(mContext, Year, Subject, i));
+        if(rows.moveToFirst()) {
+            do {
+                String YTID = rows.getString(3);
+                videos.add(new Video(this, YTID));
+            } while(rows.moveToNext());
         }
         return videos;
     }

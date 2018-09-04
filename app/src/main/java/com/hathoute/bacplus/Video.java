@@ -1,5 +1,6 @@
 package com.hathoute.bacplus;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.graphics.Bitmap;
 
@@ -10,22 +11,15 @@ import java.net.URL;
 
 public class Video {
 
-    private Context mContext;
-    private int Year;
-    private int Subject;
+    private Subject Subject;
     private String YTId;
     private Bitmap Thumbnail;
     private String Title;
     private String Channel;
 
-    public Video(Context context, int Year, int Subject, int VideoId) {
-        this.mContext = context;
-        this.Year = Year;
+    public Video(Subject Subject, String YTId) {
         this.Subject = Subject;
-        String SubjectAbv = mContext.getResources().getStringArray(R.array.subjects_abv)[Subject];
-        this.YTId = mContext.getResources().getStringArray(mContext.getResources()
-                .getIdentifier("videos_" + getYearStr() + "_" + SubjectAbv, "array",
-                        mContext.getPackageName()))[VideoId];
+        this.YTId = YTId;
     }
 
     public String getLink() {
@@ -36,35 +30,19 @@ public class Video {
         return this.Title;
     }
 
-    public boolean generateData() {
+    public void generateData() throws Exception {
         try {
             this.Thumbnail = AppHelper.getBitmapFromURL("http://img.youtube.com/vi/" + YTId + "/hqdefault.jpg");
             this.Thumbnail = Bitmap.createBitmap(Thumbnail, 0, 45, 480, 270);
-        } catch (Exception e) {
-            //Todo: remove all e.printstacktrace();
+        } catch (Exception ignored) {
         }
 
-        try {
-            URL embededURL = new URL("http://www.youtube.com/oembed?url=" +
-                    "https://www.youtube.com/watch?v=" +
-                    YTId + "&format=json"
-            );
-            this.Title = new JSONObject(IOUtils.toString(embededURL)).getString("title");
-        } catch (Exception e) {
-            return false;
-        }
-
-        try {
-            URL embededURL = new URL("http://www.youtube.com/oembed?url=" +
-                    "https://www.youtube.com/watch?v=" +
-                    YTId + "&format=json"
-            );
-            this.Channel = new JSONObject(IOUtils.toString(embededURL)).getString("author_name");
-        } catch (Exception e) {
-            return false;
-        }
-
-        return true;
+        URL embededURL = new URL("http://www.youtube.com/oembed?url=" +
+                "https://www.youtube.com/watch?v=" +
+                YTId + "&format=json"
+        );
+        this.Title = new JSONObject(IOUtils.toString(embededURL)).getString("title");
+        this.Channel = new JSONObject(IOUtils.toString(embededURL)).getString("author_name");
     }
 
     public Bitmap getThumbnail() {
@@ -84,15 +62,11 @@ public class Video {
     }
 
     public int getYear() {
-        return this.Year;
+        return this.Subject.getYear();
     }
 
     public int getSubject() {
-        return this.Subject;
-    }
-
-    private String getYearStr() {
-        return Year == MainActivity.YEAR_FIRST ? "1st" : "2nd";
+        return this.Subject.getSubject();
     }
 }
 

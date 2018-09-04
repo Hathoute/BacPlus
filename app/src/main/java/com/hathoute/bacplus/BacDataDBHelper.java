@@ -6,6 +6,7 @@ import android.content.res.AssetFileDescriptor;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.provider.FontsContract;
 import android.util.Log;
 
 import java.io.File;
@@ -18,7 +19,7 @@ import java.util.List;
 public class BacDataDBHelper {
 
     public static final String DATABASE_NAME = "bacdata";
-    public static final int DATABASE_VERSION = 10;
+    public static final int DATABASE_VERSION = 12;
 
     private final Context context;
 
@@ -32,6 +33,7 @@ public class BacDataDBHelper {
         public static final String Link = "LINK";
         public static final String ExamId = "EXAMID";
         public static final String Type = "TYPE";
+        public static final String Region = "REGION";
     }
 
     public BacDataDBHelper(Context context) {
@@ -125,7 +127,10 @@ public class BacDataDBHelper {
         if (db == null) {
             return null;
         }
-        String sqlQuery = "select id from " + formatExamTable(subjects[Subject]) + " order by id";
+        String sqlQuery = "select id from " + formatExamTable(subjects[Subject])
+                + " order by " + Columns.ExamId + " desc, "
+                + Columns.Type + " asc, "
+                + Columns.Region + " asc";
         return db.rawQuery(sqlQuery, null);
     }
 
@@ -134,7 +139,11 @@ public class BacDataDBHelper {
         if (db == null) {
             return null;
         }
-        String sqlQuery = "select id from " + formatExamTable(subjects[Subject]) + " where " + Columns.Year + " = ? order by id";
+        String sqlQuery = "select id from " + formatExamTable(subjects[Subject]) +
+                " where " + Columns.Year + " = ? " +
+                "order by " + Columns.ExamId + " desc, " +
+                Columns.Type + " asc, " +
+                Columns.Region + " asc";
         return db.rawQuery(sqlQuery, new String[] {String.valueOf(Year)});
     }
 
@@ -146,7 +155,10 @@ public class BacDataDBHelper {
         String[] Options = context.getResources().getStringArray(Year == MainActivity.YEAR_FIRST ?
                 R.array.options_firstyear_helper : R.array.options_secondyear_helper);
         String sqlQuery = "select id from " + formatExamTable(subjects[Subject]) + " where " + Columns.Year + " = ? " +
-                "and " + Columns.Options + " like '%$%' order by id";
+                "and " + Columns.Options + " like '%$%' " +
+                "order by " + Columns.ExamId + " desc, " +
+                Columns.Type + " asc, " +
+                Columns.Region + " asc";
         return db.rawQuery(sqlQuery.replace("$", Options[Option]), new String[] {String.valueOf(Year)});
     }
 
@@ -168,6 +180,7 @@ public class BacDataDBHelper {
             cv.put(Columns.Options, cur.getString(2));
             cv.put(Columns.Type, cur.getInt(3));
             cv.put(Columns.ExamId, cur.getInt(4));
+            cv.put(Columns.Region, cur.getInt(5));
         } catch(Exception e) {
             e.printStackTrace();
             return null;
@@ -176,6 +189,30 @@ public class BacDataDBHelper {
         cur.close();
         db.close();
         return exam;
+    }
+
+    public Cursor getVideos(int Subject, int Year) {
+        SQLiteDatabase db = _openHelper.getReadableDatabase();
+        if (db == null) {
+            return null;
+        }
+        String sqlQuery = "select * from " + formatVideoTable(subjects[Subject]) +
+                " where " + Columns.Year + " = ? " +
+                "order by id desc";
+        return db.rawQuery(sqlQuery, new String[] {String.valueOf(Year)});
+    }
+
+    public Cursor getVideos(int Subject, int Year, int Option) {
+        SQLiteDatabase db = _openHelper.getReadableDatabase();
+        if (db == null) {
+            return null;
+        }
+        String[] Options = context.getResources().getStringArray(Year == MainActivity.YEAR_FIRST ?
+                R.array.options_firstyear_helper : R.array.options_secondyear_helper);
+        String sqlQuery = "select * from " + formatVideoTable(subjects[Subject]) + " where " + Columns.Year + " = ? " +
+                "and " + Columns.Options + " like '%$%' " +
+                "order by id desc";
+        return db.rawQuery(sqlQuery.replace("$", Options[Option]), new String[] {String.valueOf(Year)});
     }
 
     public void copyDatabaseFromAssets() {
@@ -229,12 +266,14 @@ public class BacDataDBHelper {
     }
 
     private static String formatLessonTable(String subject) {
-        //Todo: Configure multilanguage subjects;
         return "lessons_" + subject;
     }
 
     private static String formatExamTable(String subject) {
-        //Todo: Configure multilanguage subjects;
         return "exams_" + subject;
+    }
+
+    private static String formatVideoTable(String subject) {
+        return "videos_" + subject;
     }
 }

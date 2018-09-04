@@ -92,12 +92,31 @@ public class AvailableDocsFragment extends Fragment {
 
     private void sectionObjects() {
         int lastId = iSubject;
+        int lastSubId = 0;
         for(Object object : objectList) {
             if(object instanceof Lesson) {
                 int subId = ((Lesson) object).getSubject();
                 if(subId != lastId) {
                     sectionObjectList.add(subId);
                     lastId = subId;
+                    lastSubId = 0;
+                }
+                if(lastSubId != -1) {
+                    lastSubId = -1;
+                    sectionObjectList.add(lastSubId);
+                }
+                sectionObjectList.add(object);
+            }
+            else if(object instanceof Exam) {
+                int subId = ((Exam) object).getSubject();
+                if(subId != lastId) {
+                    sectionObjectList.add(subId);
+                    lastId = subId;
+                    lastSubId = 0;
+                }
+                if(lastSubId != -2) {
+                    lastSubId = -2;
+                    sectionObjectList.add(lastSubId);
                 }
                 sectionObjectList.add(object);
             }

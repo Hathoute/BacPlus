@@ -20,6 +20,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 public class AppHelper {
 
@@ -39,8 +40,7 @@ public class AppHelper {
             connection.connect();
             InputStream input = connection.getInputStream();
             return BitmapFactory.decodeStream(input);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
             return null;
         }
     }
@@ -133,5 +133,24 @@ public class AppHelper {
         }
 
         return result;
+    }
+
+    public static String getAppropriateSize(int bytes) {
+        float convertedBytes;
+        String sizePrefix;
+        if(bytes < 1024) {
+            convertedBytes = bytes;
+            sizePrefix = "bytes";
+        }
+        else if(bytes < 1024*1024) {
+            convertedBytes = (float)bytes/1024;
+            sizePrefix = "KB";
+        }
+        else {
+            convertedBytes = (float)bytes/(1024*1024);
+            sizePrefix = "MB";
+        }
+
+        return String.format(Locale.ENGLISH, "%.2f", convertedBytes) + " " + sizePrefix;
     }
 }

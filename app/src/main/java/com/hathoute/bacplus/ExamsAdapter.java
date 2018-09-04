@@ -18,12 +18,14 @@ public class ExamsAdapter extends BaseAdapter {
     private static class ViewHolder {
         TextView tvExamType;
         TextView tvExamId;
+        TextView tvRegion;
     }
 
     public ExamsAdapter(Context context, Subject subject) {
         this.mContext = context;
         this.exams = subject.getExams();
-        for(int i = 0; i < this.exams.size(); i++) {
+        // Old way to class files, future is now nibba.
+        /*for(int i = 0; i < this.exams.size(); i++) {
             if(this.exams.get(i).getType() == Exam.Types.RATTRAPAGE)
                 continue;
 
@@ -38,7 +40,7 @@ public class ExamsAdapter extends BaseAdapter {
                 }
                 j++;
             }
-        }
+        }*/
     }
 
     @Override
@@ -70,6 +72,7 @@ public class ExamsAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.exam_item_arabic, parent, false);
             viewHolder.tvExamType = convertView.findViewById(R.id.examType);
             viewHolder.tvExamId = convertView.findViewById(R.id.examId);
+            viewHolder.tvRegion = convertView.findViewById(R.id.examRegion);
 
             convertView.setTag(viewHolder);
         }
@@ -107,6 +110,17 @@ public class ExamsAdapter extends BaseAdapter {
             arrayid = 0;
         viewHolder.tvExamType.setText(mContext.getResources()
                 .getStringArray(R.array.exam_types)[arrayid]);
+
+        int iRegion = exam.getRegionId();
+        if(iRegion == -1) {
+            viewHolder.tvRegion.setVisibility(View.GONE);
+        }
+        else {
+            String mRegion = mContext.getResources().getStringArray(R.array.regions_names)[iRegion];
+            viewHolder.tvRegion.setText(Html.fromHtml(
+                    mContext.getResources().getString(R.string.exam_region)
+                            .replace("$", "<b>" + mRegion + "</b>")));
+        }
         // Return the completed view to render on screen
         return convertView;
     }

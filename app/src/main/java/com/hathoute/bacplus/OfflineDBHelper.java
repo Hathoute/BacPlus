@@ -130,7 +130,9 @@ public class OfflineDBHelper {
             return null;
         }
         String sqlQuery = "select * from " + TABLE_AVAILABLE  +
-                " order by " + COLUMN_SUBJECT + " asc, " + COLUMN_TYPE + " desc";
+                " order by " + COLUMN_SUBJECT + " asc, " +
+                COLUMN_TYPE + " asc, " +
+                COLUMN_ID + " asc";
         return db.rawQuery(sqlQuery, new String[] {});
     }
 
@@ -139,8 +141,9 @@ public class OfflineDBHelper {
         if (db == null) {
             return null;
         }
-        String sqlQuery = "select * from " + TABLE_AVAILABLE  + " where " + COLUMN_SUBJECT + "=? "
-               + "order by " + COLUMN_TYPE + " desc";
+        String sqlQuery = "select * from " + TABLE_AVAILABLE  + " where " + COLUMN_SUBJECT + "=? " +
+                "order by " + COLUMN_TYPE + " asc, " +
+                COLUMN_ID + " asc";
         return db.rawQuery(sqlQuery, new String[] {String.valueOf(Subject)});
     }
 
