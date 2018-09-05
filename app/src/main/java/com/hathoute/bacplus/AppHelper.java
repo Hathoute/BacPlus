@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.support.v4.content.FileProvider;
 
@@ -25,6 +27,7 @@ import java.util.Locale;
 public class AppHelper {
 
     public static String hostURL = "http://80.211.97.124/";
+    public static String ADMOB_ID = "ca-app-pub-9871252548902893~9736828725";
 
     public static class Storage {
         static final int None = 0;
@@ -152,5 +155,16 @@ public class AppHelper {
         }
 
         return String.format(Locale.ENGLISH, "%.2f", convertedBytes) + " " + sizePrefix;
+    }
+
+    public static boolean isNetworkAvailable(Context context) {
+        try {
+            ConnectivityManager connectivityManager
+                    = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+            return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+        } catch(Exception ignored) {
+            return false;
+        }
     }
 }

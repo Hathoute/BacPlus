@@ -9,6 +9,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
 import java.util.List;
 
 public class TabbedSubjectActivity extends AppCompatActivity {
@@ -32,7 +35,15 @@ public class TabbedSubjectActivity extends AppCompatActivity {
         ((TextView)findViewById(R.id.tvTbTitle)).setText(getResources().getStringArray(R.array.subjects)[iChosenSubject]);
         setSupportActionBar(toolbar);
 
+        configureAds();
+
         configureTabs();
+    }
+
+    void configureAds() {
+        AdView adBottom = findViewById(R.id.adBottom);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adBottom.loadAd(adRequest);
     }
 
     void configureTabs() {

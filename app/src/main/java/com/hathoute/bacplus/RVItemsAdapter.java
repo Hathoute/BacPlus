@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,17 +21,22 @@ public class RVItemsAdapter extends RecyclerView.Adapter<RVItemsAdapter.MyViewHo
     private RecyclerView mRecyclerView;
     private static final int VIEW_SECTION_MAIN = 1;
     private static final int VIEW_SECTION_SIGMA = 2;
-
+    private static final int VIEW_NOTICE = 3;
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView tvName, tvYear, tvSection;
+        public TextView tvName, tvYear, tvSection, tvNotice;
         public ImageButton ibOpen, ibDownload, ibDelete;
+        public ImageView ivNotice;
 
         public MyViewHolder(View view) {
             super(view);
             if(view.getTag().equals(VIEW_SECTION_MAIN) || view.getTag().equals(VIEW_SECTION_SIGMA))
                 tvSection = view.findViewById(R.id.tvSection);
+            else if(view.getTag().equals(VIEW_NOTICE)) {
+                tvNotice = view.findViewById(R.id.tvNotice);
+                ivNotice = view.findViewById(R.id.ivNotice);
+            }
             else {
                 tvName = view.findViewById(R.id.tvName);
                 tvYear = view.findViewById(R.id.tvYear);
@@ -62,6 +68,9 @@ public class RVItemsAdapter extends RecyclerView.Adapter<RVItemsAdapter.MyViewHo
         else if(viewType == VIEW_SECTION_SIGMA)
             itemView = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.row_section_sigma, parent, false);
+        else if(viewType == VIEW_NOTICE)
+            itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.item_notice, parent, false);
         else
             itemView = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.row_item_1, parent, false);
@@ -75,6 +84,9 @@ public class RVItemsAdapter extends RecyclerView.Adapter<RVItemsAdapter.MyViewHo
         if(objectList.get(position) instanceof Integer) {
             if((Integer)objectList.get(position) < 0)
                 return VIEW_SECTION_SIGMA;
+            else if((Integer)objectList.get(position) == R.drawable.icon_nothingfound
+                    || (Integer)objectList.get(position) == R.drawable.icon_emptylist)
+                return VIEW_NOTICE;
             else
                 return VIEW_SECTION_MAIN;
         }
@@ -97,6 +109,12 @@ public class RVItemsAdapter extends RecyclerView.Adapter<RVItemsAdapter.MyViewHo
                     holder.tvSection.setText(App.getContext().getResources()
                             .getStringArray(R.array.subjects)[(Integer) object]);
             }
+        }
+        else if(getItemViewType(position) == VIEW_NOTICE && object instanceof Integer) {
+            holder.tvNotice.setText((Integer)object == R.drawable.icon_emptylist ?
+                    R.string.notice_empty_lastseen : R.string.notice_nothing_found_available);
+            holder.ivNotice.setImageDrawable(App.getContext()
+                    .getResources().getDrawable((Integer)object));
         }
         else {
             if (object instanceof Lesson) {

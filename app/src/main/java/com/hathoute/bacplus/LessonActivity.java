@@ -36,6 +36,8 @@ public class LessonActivity extends SlidingActivity {
         resources = this.getResources();
         setupViews();
         setupListeners();
+
+        startService(new Intent(LessonActivity.this, AdManagerService.class));
     }
 
     public void setupViews() {
@@ -67,6 +69,7 @@ public class LessonActivity extends SlidingActivity {
                 if(!lesson.open(LessonActivity.this)) {
                     lesson.download(LessonActivity.this, true);
                 }
+                startService(new Intent(LessonActivity.this, AdManagerService.class));
             }
         });
 
@@ -92,6 +95,7 @@ public class LessonActivity extends SlidingActivity {
                 @Override
                 public void onClick(View v) {
                     lesson.deleteDialog(LessonActivity.this);
+                    startService(new Intent(LessonActivity.this, AdManagerService.class));
                 }
             });
         }

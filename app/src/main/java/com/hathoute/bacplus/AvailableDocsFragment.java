@@ -45,7 +45,6 @@ public class AvailableDocsFragment extends Fragment {
         rvAvailable = view.findViewById(R.id.rvLastSeen);
         setupRecyclerView();
         prepareObjects();
-        sectionObjects();
 
         return view;
     }
@@ -87,6 +86,11 @@ public class AvailableDocsFragment extends Fragment {
                 }
                 objectList.add(object);
             } while (cursor.moveToNext());
+            sectionObjects();
+        }
+        else {
+            sectionObjectList.add(R.drawable.icon_nothingfound);
+            mAdapter.notifyDataSetChanged();
         }
     }
 

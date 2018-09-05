@@ -19,6 +19,8 @@ public class WelcomeActivity extends AppCompatActivity {
         bOnline = findViewById(R.id.bOnline);
         bOffline = findViewById(R.id.bOffline);
 
+        startService(new Intent(this, AdManagerService.class));
+
         configureButtons();
     }
 

@@ -21,6 +21,9 @@ import android.view.SubMenu;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
@@ -62,7 +65,15 @@ public class OfflineDocsActivity extends AppCompatActivity
         new OfflineDBHelper(this).clear(OfflineDBHelper.AVAILABLE);
         scanOffline(getFilesDir());
 
+        configureAd();
+
         showNotice();
+    }
+
+    void configureAd() {
+        AdView adBottom = findViewById(R.id.adBottom);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adBottom.loadAd(adRequest);
     }
 
     public void showNotice() {
@@ -87,7 +98,6 @@ public class OfflineDocsActivity extends AppCompatActivity
         List<Integer> idList = formatSubjects();
         String[] subjectNames = getResources().getStringArray(R.array.subjects);
         for(Integer id : idList) {
-            //Todo: Design Icons.
             submenu.add(0, id, 1, subjectNames[id]).setCheckable(true)
                     .setChecked(false).setIcon(R.drawable.ic_downloads);
         }

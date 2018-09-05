@@ -109,6 +109,10 @@ public class LastSeenFragment extends Fragment {
             } while (cursor.moveToNext());
             mAdapter.notifyDataSetChanged();
         }
+        else {
+            objectList.add(R.drawable.icon_emptylist);
+            mAdapter.notifyDataSetChanged();
+        }
     }
 
     private void clearObjects() {

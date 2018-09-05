@@ -3,13 +3,18 @@ package com.hathoute.bacplus;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +26,16 @@ public class VideosFragment extends Fragment {
     Subject subject;
     boolean rowsEnd;
     boolean isLoading;
+
+    private static final int NOTICE_DISCONNECTED = 0;
+    private static final int NOTICE_NET_PROBLEM = 1;
+    private static final int NOTICE_NOTHING_FOUND = 2;
+
+    private static final int[][] notice_items = {
+            {R.drawable.icon_disconnected, R.string.notice_disconnected},
+            {R.drawable.icon_networkproblem, R.string.notice_networkproblem},
+            {R.drawable.icon_nothingfound, R.string.notice_empty_videoslist}
+    };
 
     @Override
     public void onAttach(Context context) {
@@ -66,9 +81,57 @@ public class VideosFragment extends Fragment {
                 AppHelper.watchYoutubeVideo(mContext, adapter.getItem(position).getYTId());
             }
         });
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(!AppHelper.isNetworkAvailable(mContext)) {
+                    setNotice(NOTICE_DISCONNECTED);
+                }
+                else if(subject.getVideos().size() == 0) {
+                    setNotice(NOTICE_NOTHING_FOUND);
+                }
+                else {
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(adapter.getCount() == 0) {
+                                setNotice(NOTICE_NET_PROBLEM);
+                            }
+                        }
+                    }, 10000);
+                }
+            }
+        }, 500);
+
         return view;
     }
 
+    private void setNotice(int Type) {
+        System.out.println("NNN: setNotice " + Type);
+        if(getView() == null)
+            return;
+
+        final TextView tvNotice = getView().findViewById(R.id.tvNotice);
+        final ImageView ivNotice = getView().findViewById(R.id.ivNotice);
+
+        ivNotice.setImageDrawable(mContext.getResources().getDrawable(notice_items[Type][0]));
+        tvNotice.setText(notice_items[Type][1]);
+
+        lvVideos.setVisibility(View.INVISIBLE);
+    }
+
+    private void removeNotice() {
+        if(getView() == null)
+            return;
+
+        RelativeLayout noticeContainer = getView().findViewById(R.id.noticeContainer);
+        if(noticeContainer.getVisibility() == View.VISIBLE) {
+            System.out.println("NNN: RemoveNotice");
+            lvVideos.setVisibility(View.VISIBLE);
+            noticeContainer.setVisibility(View.GONE);
+        }
+    }
 
     private int curRow = 0;
 
@@ -106,6 +169,7 @@ public class VideosFragment extends Fragment {
         @Override
         protected void onProgressUpdate(Video... videos) {
             videosAdapter.add(videos[0]);
+            removeNotice();
         }
 
         @Override

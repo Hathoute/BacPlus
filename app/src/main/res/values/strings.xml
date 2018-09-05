@@ -151,6 +151,13 @@
 للبدء، المرجو الضعط على $الزر على اليمين فوق النافدة£.</string>
     <string name="offline_available">عدد الملفات المتاحة: $</string>
 
+    <string name="notice_nothing_found_available">لم نستطع إيجاد اي ملف قمت بتحميله.
+ان لم تقم بتحميل اي ملف بعد، المرجو الرجوع الى القائمة الاولى و الضعط على الزر البرتقالي.</string>
+    <string name="notice_empty_lastseen">لا توجد اي معلومة عن آخر مشاهداتكم، سجلكم فارغ.</string>
+    <string name="notice_disconnected">لستم متصلين بشبكة الانترنت.</string>
+    <string name="notice_networkproblem">يبدو أن هناك مشكلة في الإنترنت، يرجى التحقق من طريقة الاتصال الخاصة بك.</string>
+    <string name="notice_empty_videoslist">القائمة فارغة. نحن على علم بهذا وسوف نضيف مقاطع فيديو في أسرع وقت ممكن.</string>
+
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>

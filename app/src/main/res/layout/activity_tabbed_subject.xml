@@ -45,4 +45,15 @@
         android:layout_height="fill_parent"
         android:layout_below="@id/tab_layout"/>
 
+    <com.google.android.gms.ads.AdView
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adBottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="ca-app-pub-9871252548902893/2466619467">
+    </com.google.android.gms.ads.AdView>
+
 </RelativeLayout>

@@ -158,6 +158,7 @@ public class DownloadsManager extends AsyncTask<Void, Integer, String> {
     @Override
     protected void onPostExecute(String result) {
         mWakeLock.release();
+        context.startService(new Intent(context, AdManagerService.class));
         if(!isDownload)
             dHelp.dismiss();
         if (result != null)
@@ -208,8 +209,8 @@ public class DownloadsManager extends AsyncTask<Void, Integer, String> {
                 try {
                     context.startActivity(intent1);
                 } catch (ActivityNotFoundException e) {
-                    Toast.makeText(context, "NOTHING", Toast.LENGTH_SHORT).show();
-                    //Todo: Set Message to download PDF Reader
+                    Toast.makeText(context, "Please download a PDF Viewer", Toast.LENGTH_SHORT)
+                            .show();
                 }
             }
         });
@@ -220,6 +221,5 @@ public class DownloadsManager extends AsyncTask<Void, Integer, String> {
                 dHelp.dismiss();
             }
         });
-        //Todo: Set back click listener to give user choice (double click).
     }
 }

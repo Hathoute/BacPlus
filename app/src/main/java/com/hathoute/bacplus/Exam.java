@@ -96,8 +96,7 @@ public class Exam {
         try {
             context.startActivity(intent1);
             new OfflineDBHelper(context).add(OfflineDBHelper.LAST, this);
-        } catch (ActivityNotFoundException e) {
-            //Todo: Set Message to download PDF Reader
+        } catch (ActivityNotFoundException ignored) {
         }
         return true;
     }

@@ -24,7 +24,6 @@ public class ExamActivity extends SlidingActivity {
 
     private Exam exam;
     private Resources resources;
-    private boolean isProcessing = false;
 
     @Override
     public void init(Bundle savedInstanceState) {
@@ -36,6 +35,8 @@ public class ExamActivity extends SlidingActivity {
         resources = this.getResources();
         setupViews();
         setupListeners();
+
+        startService(new Intent(ExamActivity.this, AdManagerService.class));
     }
 
     public void setupViews() {
@@ -85,6 +86,8 @@ public class ExamActivity extends SlidingActivity {
             public void onClick(View v) {
                 if(!exam.open(ExamActivity.this))
                     exam.download(ExamActivity.this, true);
+
+                startService(new Intent(ExamActivity.this, AdManagerService.class));
             }
         });
 
@@ -111,6 +114,7 @@ public class ExamActivity extends SlidingActivity {
                 @Override
                 public void onClick(View v) {
                     exam.deleteDialog(ExamActivity.this);
+                    startService(new Intent(ExamActivity.this, AdManagerService.class));
                 }
             });
         }

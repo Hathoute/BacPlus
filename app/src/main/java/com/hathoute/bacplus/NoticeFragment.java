@@ -30,7 +30,6 @@ public class NoticeFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_offline_notice, container, false);
 
-        //Todo: Add Title
         ((OfflineDocsActivity)getActivity()).setActionBarTitle(R.string.choice_offline);
 
         int iAvailable = getArguments().getInt("available");

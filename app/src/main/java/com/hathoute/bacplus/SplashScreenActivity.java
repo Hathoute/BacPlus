@@ -9,6 +9,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import com.google.android.gms.ads.MobileAds;
+
 import java.util.Random;
 
 public class SplashScreenActivity extends AppCompatActivity {
@@ -20,7 +22,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         final ProgressBar spLoad = findViewById(R.id.progressBar);
         Animation splashanim = AnimationUtils.loadAnimation(this, R.anim.splash_fade_in);
         spLoad.startAnimation(splashanim);
-
+        MobileAds.initialize(this, AppHelper.ADMOB_ID);
         Thread splashTimer = new Thread() {
             public void run() {
                 Random ran = new Random();

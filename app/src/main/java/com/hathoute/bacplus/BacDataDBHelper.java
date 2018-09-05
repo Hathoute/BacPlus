@@ -19,7 +19,7 @@ import java.util.List;
 public class BacDataDBHelper {
 
     public static final String DATABASE_NAME = "bacdata";
-    public static final int DATABASE_VERSION = 12;
+    public static final int DATABASE_VERSION = 1;
 
     private final Context context;
 
