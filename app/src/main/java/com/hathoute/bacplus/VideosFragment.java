@@ -108,7 +108,6 @@ public class VideosFragment extends Fragment {
     }
 
     private void setNotice(int Type) {
-        System.out.println("NNN: setNotice " + Type);
         if(getView() == null)
             return;
 
@@ -127,7 +126,6 @@ public class VideosFragment extends Fragment {
 
         RelativeLayout noticeContainer = getView().findViewById(R.id.noticeContainer);
         if(noticeContainer.getVisibility() == View.VISIBLE) {
-            System.out.println("NNN: RemoveNotice");
             lvVideos.setVisibility(View.VISIBLE);
             noticeContainer.setVisibility(View.GONE);
         }

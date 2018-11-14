@@ -48,7 +48,7 @@ public class AdManagerService extends Service {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (mInterstitialAd.isLoaded() && showAd >= 3) {
+                if (mInterstitialAd.isLoaded() && showAd >= 5) {
                     mInterstitialAd.show();
                     showAd = 0;
                 }

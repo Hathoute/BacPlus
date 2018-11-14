@@ -157,7 +157,10 @@ public class DownloadsManager extends AsyncTask<Void, Integer, String> {
 
     @Override
     protected void onPostExecute(String result) {
-        mWakeLock.release();
+        try {
+            mWakeLock.release();
+        } catch(Exception ignored) { }
+
         context.startService(new Intent(context, AdManagerService.class));
         if(!isDownload)
             dHelp.dismiss();
