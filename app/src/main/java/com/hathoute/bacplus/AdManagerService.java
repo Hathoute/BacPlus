@@ -29,7 +29,7 @@ public class AdManagerService extends Service {
         super.onCreate();
 
         mInterstitialAd = new InterstitialAd(getApplicationContext());
-        mInterstitialAd.setAdUnitId("ca-app-pub-9871252548902893/6571060590");
+        mInterstitialAd.setAdUnitId("YOUR_AD_UNIT");
         AdRequest adRequest = new AdRequest.Builder().build();
         mInterstitialAd.loadAd(adRequest);
 
